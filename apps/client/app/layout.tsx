@@ -6,7 +6,7 @@ import NavBar from "./NavBar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Yt  Workspace",
+  title: "YT Workspace.",
   description: "",
 };
 
@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-[#0A0A0A] text-white`}>
         <NavBar />
         <main>{children}</main>
       </body>
