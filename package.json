@@ -1,5 +1,5 @@
 {
-  "name": "YT-WORKSPACE",
+  "name": "yt-workspace",
   "private": true,
   "scripts": {
     "build": "turbo build",
