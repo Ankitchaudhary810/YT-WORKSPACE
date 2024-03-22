@@ -31,6 +31,12 @@ export default function Home() {
             editors, empowering them to co-create captivating content that
             resonates with audiences worldwide.
           </p>
+          <Button
+            className="mt-3 text-black hover:bg-[#0A0A0A] hover:text-white transition-all"
+            variant="outline"
+          >
+            Continue.
+          </Button>
         </div>
       </div>
     </>
