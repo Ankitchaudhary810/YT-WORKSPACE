@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import userRouter from "./routes/user";
+import workspaceRouter from "./routes/workspace";
 
 const app = express();
 
@@ -16,11 +17,8 @@ app.use(
   })
 );
 
-app.get("/me", (req, res) => {
-  res.send("hi");
-});
-
 app.use("/api/v1", userRouter);
+app.use("/api/v1", workspaceRouter);
 
 app.listen(process.env.PORT, () => {
   console.log("Server is running at port ", process.env.PORT);
