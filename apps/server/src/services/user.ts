@@ -7,25 +7,20 @@ class UserService {
   public static async handleSignup(req: Request, res: Response) {
     try {
       const { name, email, password } = req.body;
-
-      const user = await prisma.user.findFirst({
+      const existingUser = await prisma.user.findUnique({
         where: {
           email,
         },
       });
-
-      if (!user) return res.json({ msg: "Email Already Exist" });
-
+      if (existingUser) return res.json({ msg: "Email Already Exist" });
       const hashedPassword = await bcrypt.hash(password, 4);
-
-      await prisma.user.create({
+      const user = await prisma.user.create({
         data: {
           name,
           email,
           password: hashedPassword,
         },
       });
-
       const token = jwt.sign(
         { id: user.id, email: user.email, role: "User" },
         process.env.SECRET!
@@ -46,10 +41,10 @@ class UserService {
         },
       });
 
-      if (!user) return res.json({ msg: "Email Already Exist" });
+      if (!user) return res.status(403).json({ msg: "Email Already Exist" });
 
       if (!(await bcrypt.compare(password, user.password))) {
-        return res.json({ msg: "Password not Match" });
+        return res.status(403).json({ msg: "Password not Match" });
       }
 
       const token = await jwt.sign(
@@ -94,8 +89,6 @@ class UserService {
           },
         },
       });
-      await prisma.video_Editor.update({});
-
       return res.sendStatus(200);
     } catch (error) {
       console.log("Error while createEditor", error);
