@@ -62,6 +62,46 @@ class UserService {
       return res.sendStatus(501);
     }
   }
+
+  public static async CreateEditor(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body;
+      const userRole: string = req.headers["userRole"] as string;
+      const userId: string = req.headers["userId"] as string;
+      const userEmail: string = req.headers["userEmail"] as string;
+      const user = await prisma.user.findFirst({
+        where: {
+          id: userId,
+        },
+      });
+
+      if (!user) return res.json({ msg: "User not Found" });
+      const hashedPass = await bcrypt.hash(password, 4);
+
+      let editor = await prisma.video_Editor.findFirst({
+        where: {
+          email,
+        },
+      });
+      if (editor) return res.json({ msg: "Editor Already Exists" });
+
+      editor = await prisma.video_Editor.create({
+        data: {
+          email,
+          password: hashedPass,
+          ParentUser: {
+            connect: { id: userId },
+          },
+        },
+      });
+      await prisma.video_Editor.update({});
+
+      return res.sendStatus(200);
+    } catch (error) {
+      console.log("Error while createEditor", error);
+      return res.sendStatus(501);
+    }
+  }
 }
 
 export default UserService;
