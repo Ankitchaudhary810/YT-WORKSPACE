@@ -95,6 +95,33 @@ class UserService {
       return res.sendStatus(501);
     }
   }
+
+  public static async LoginEditor(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body;
+
+      const editor = await prisma.video_Editor.findFirst({
+        where: {
+          email,
+        },
+      });
+
+      if (!editor) return res.status(403).json({ msg: "Editor Not Found" });
+
+      if (!(await bcrypt.compare(password, editor.password)))
+        return res.status(403).json({ msg: "Invalid Password" });
+
+      const token = jwt.sign(
+        { id: editor.id, email: editor.email, role: "Editor" },
+        process.env.SECRET!
+      );
+
+      return res.status(200).json({ token });
+    } catch (error) {
+      console.log("Error while loginEditor", error);
+      return res.sendStatus(501);
+    }
+  }
 }
 
 export default UserService;
