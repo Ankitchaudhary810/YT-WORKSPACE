@@ -32,7 +32,7 @@ export default function Home() {
             resonates with audiences worldwide.
           </p>
           <Button
-            className="mt-3 text-black hover:bg-[#0A0A0A] hover:text-white transition-all"
+            className="mt-16 text-black hover:bg-[#0A0A0A] hover:text-white transition-all"
             variant="outline"
           >
             Continue.

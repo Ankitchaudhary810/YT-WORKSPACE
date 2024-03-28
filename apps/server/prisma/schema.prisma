@@ -45,6 +45,8 @@ model Workspace {
   status      VIDEO_STATUS @default(PENDING)
   uploadedBy  User         @relation(fields: [userId], references: [id])
   userId      String
+  videoName   String
+  aws_s3_url  String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

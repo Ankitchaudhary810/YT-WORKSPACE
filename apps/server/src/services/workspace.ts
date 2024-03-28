@@ -21,7 +21,7 @@ class WorkspaceService {
 
   public static async GetSignedUrlForVideo(req: Request, res: Response) {
     try {
-      const acutalUserId = "12345677";
+      const acutalUserId = "12345677"; // put actual user id
       const pubtobjectCommand = new PutObjectCommand({
         Bucket: process.env.BUCKET_NAME,
         Key: `uploads/${acutalUserId}/video/${Date.now().toString()}`,
