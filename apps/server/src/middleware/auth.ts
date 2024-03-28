@@ -51,9 +51,6 @@ class Auth {
       if (authHeader) {
         const token = authHeader.split(" ")[1];
         jwt.verify(token, process.env.SECRET!, (err, decodedToken) => {
-          console.log(err);
-          console.log(decodedToken);
-
           if (err) {
             return res.sendStatus(403);
           }

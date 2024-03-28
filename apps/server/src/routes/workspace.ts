@@ -8,8 +8,6 @@ const router = express.Router();
 // editor Logic
 router
   .route("/upload-video")
-  .post(Auth.editorAuth, WorkspaceService.uploadVideo);
-
-router.route("/get-signed-url").get(WorkspaceService.GetSignedUrlForVideo);
+  .get(Auth.editorAuth, WorkspaceService.uploadVideo);
 
 export default router;
