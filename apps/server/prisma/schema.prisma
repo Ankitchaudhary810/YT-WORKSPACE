@@ -40,8 +40,8 @@ enum VIDEO_STATUS {
 
 model Workspace {
   id          String       @id @default(cuid())
-  title       String
-  description String
+  title       String?
+  description String?
   status      VIDEO_STATUS @default(PENDING)
   uploadedBy  User         @relation(fields: [userId], references: [id])
   userId      String

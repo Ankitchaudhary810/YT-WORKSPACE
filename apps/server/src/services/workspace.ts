@@ -59,8 +59,6 @@ class WorkspaceService {
 
       const workspace = await prisma.workspace.create({
         data: {
-          title: "adsklfj",
-          description: "asdlk",
           status: "PENDING",
           aws_s3_url: aws_video_url,
           videoName: fileName,
