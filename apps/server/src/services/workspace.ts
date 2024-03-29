@@ -3,11 +3,12 @@ import { prisma } from "../prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import axios from "axios";
-import { getSignedUrlForAws } from ".";
+import { getSignedUrlForAws } from "../utility";
 import fs from "fs";
 class WorkspaceService {
   public static async uploadVideo(req: Request, res: Response) {
     try {
+      // console.log(req.file?.filename);
       const id = req.headers["userId"];
       if (typeof id !== "string") return;
 
@@ -22,7 +23,12 @@ class WorkspaceService {
       const userid = editor.userId;
       if (!userid) return;
 
-      const { getSignedUrl, fileName } = await getSignedUrlForAws(userid);
+      if (!req.file?.filename) return;
+
+      const { getSignedUrl, fileName } = await getSignedUrlForAws(
+        userid,
+        req.file?.filename
+      );
       if (!getSignedUrl) return;
 
       const user = await prisma.user.findUnique({
@@ -33,7 +39,7 @@ class WorkspaceService {
 
       if (!user) return res.sendStatus(403);
 
-      const file_pat = "../server/upload/auth-service.mp4";
+      const file_pat = `../server/upload/${req.file?.filename}`;
       const videoFileData = fs.readFileSync(file_pat);
 
       // upload logic
@@ -63,6 +69,10 @@ class WorkspaceService {
           },
         },
       });
+
+      // remove the file from the server
+      fs.unlinkSync(file_pat);
+
       return res.sendStatus(200);
     } catch (error) {
       console.log("Error in uploadVideo", error);
