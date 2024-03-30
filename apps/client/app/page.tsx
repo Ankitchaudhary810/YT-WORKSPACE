@@ -1,10 +1,17 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import HomeImage from "../public/home.svg";
 
 export default function Home() {
+  const router = useRouter();
+  const handleSubmit = () => {
+    if (!localStorage.getItem("user_jwt")) {
+      router.push("/signup");
+    }
+  };
   return (
     <>
       {/* dash board */}
@@ -34,6 +41,7 @@ export default function Home() {
           <Button
             className="mt-16 text-black hover:bg-[#0A0A0A] hover:text-white transition-all"
             variant="outline"
+            onClick={handleSubmit}
           >
             Continue.
           </Button>

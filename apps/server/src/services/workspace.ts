@@ -10,7 +10,7 @@ class WorkspaceService {
     try {
       // console.log(req.file?.filename);
       const id = req.headers["userId"];
-      if (typeof id !== "string") return;
+      if (typeof id !== "string") return res.sendStatus(403);
 
       const editor = await prisma.video_Editor.findUnique({
         where: {
@@ -21,15 +21,7 @@ class WorkspaceService {
       if (!editor) return res.sendStatus(403);
 
       const userid = editor.userId;
-      if (!userid) return;
-
-      if (!req.file?.filename) return;
-
-      const { getSignedUrl, fileName } = await getSignedUrlForAws(
-        userid,
-        req.file?.filename
-      );
-      if (!getSignedUrl) return;
+      if (!userid) return res.sendStatus(403);
 
       const user = await prisma.user.findUnique({
         where: {
@@ -38,6 +30,14 @@ class WorkspaceService {
       });
 
       if (!user) return res.sendStatus(403);
+
+      if (!req.file?.filename) return res.sendStatus(403);
+
+      const { getSignedUrl, fileName } = await getSignedUrlForAws(
+        userid,
+        req.file?.filename
+      );
+      if (!getSignedUrl) return;
 
       const file_pat = `../server/upload/${req.file?.filename}`;
       const videoFileData = fs.readFileSync(file_pat);
