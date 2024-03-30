@@ -4,12 +4,22 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import HomeImage from "../public/home.svg";
+import toast from "react-hot-toast";
 
 export default function Home() {
   const router = useRouter();
   const handleSubmit = () => {
     if (!localStorage.getItem("user_jwt")) {
+      toast.error("Not Authenticated.", {
+        style: {
+          borderRadius: "3px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
       router.push("/signup");
+    } else {
+      router.push("/workspace");
     }
   };
   return (
