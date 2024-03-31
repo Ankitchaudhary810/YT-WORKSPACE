@@ -8,13 +8,15 @@ import toast from "react-hot-toast";
 
 export default function Home() {
   const router = useRouter();
+
   const handleSubmit = () => {
     if (!localStorage.getItem("user_jwt")) {
       toast.error("Not Authenticated.", {
         style: {
-          borderRadius: "3px",
-          background: "#333",
+          borderRadius: "7px",
+          background: "#000000",
           color: "#fff",
+          border: "1px solid white",
         },
       });
       router.push("/signup");

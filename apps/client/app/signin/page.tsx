@@ -29,10 +29,10 @@ export default function LoginPage() {
   return (
     <>
       <div className="relative flex flex-col justify-center items-center min-h-screen overflow-hidden rounded-sm">
-        <div className="w-full m-auto bg-black lg:max-w-lg rounded-md">
-          <Card>
+        <div className="w-96 m-auto bg-black lg:max-w-lg rounded-md">
+          <Card className="bg-black">
             <CardHeader className="space-y-1">
-              <CardTitle className="text-2xl text-center">
+              <CardTitle className="text-2xl text-center text-white">
                 Login For User
               </CardTitle>
               <CardDescription className="text-center">
@@ -41,7 +41,9 @@ export default function LoginPage() {
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-white">
+                  Email
+                </Label>
                 <Input
                   id="email"
                   type="email"

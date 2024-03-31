@@ -12,7 +12,8 @@ class UserService {
           email,
         },
       });
-      if (existingUser) return res.json({ msg: "Email Already Exist" });
+      if (existingUser)
+        return res.status(403).json({ msg: "Email Already Exist" });
       const hashedPassword = await bcrypt.hash(password, 4);
       const user = await prisma.user.create({
         data: {

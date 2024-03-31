@@ -14,23 +14,51 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@radix-ui/react-label";
 import Link from "next/link";
 import toast from "react-hot-toast";
+
+import { useSignUp } from "@/hooks/user";
+import Loader from "@/components/ui/Loader";
+
 export default function LoginPage() {
   const router = useRouter();
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const signUpMutation = useSignUp({ name, email, password });
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log(name, email, password);
-  }
+    try {
+      const { data } = await signUpMutation.mutateAsync();
+      console.log("in the ui", data);
+
+      if (data && data.token) {
+        console.log("token: ", data.token);
+        console.log("status: ", data.status);
+        localStorage.setItem("user_jwt", data.token);
+        toast.success("Welcome", {
+          style: {
+            borderRadius: "7px",
+            background: "#000000",
+            color: "#fff",
+            border: "1px solid black",
+          },
+        });
+        router.push("/workspace");
+      } else {
+        toast.error("Failed to sign up");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      toast.error("Failed to sign up");
+    }
+  };
 
   return (
     <>
       <div className="relative flex flex-col justify-center items-center min-h-screen overflow-hidden rounded-sm mt-2">
-        <div className="w-full m-auto bg-black lg:max-w-lg rounded-md">
+        <div className="w-96 m-auto bg-black lg:max-w-lg rounded-md">
           <Card>
             <CardHeader className="space-y-1">
               <CardTitle className="text-2xl text-center">
@@ -76,7 +104,13 @@ export default function LoginPage() {
             </CardContent>
             <CardFooter className="flex flex-col">
               <Button className="w-full" onClick={handleSubmit}>
-                Sign Up
+                {signUpMutation.isPending ? (
+                  <>
+                    <Loader />
+                  </>
+                ) : (
+                  "Sign Up"
+                )}
               </Button>
               <p className="mt-2 text-xs text-center text-gray-700">
                 {" "}
