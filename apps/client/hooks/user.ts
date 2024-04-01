@@ -3,27 +3,27 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import toast from "react-hot-toast";
-export const useSignUp = ({ name, email, password }: SignUpProps) => {
+
+export const useSignUp = () => {
   const mutation = useMutation({
     mutationKey: ["signup"],
-    mutationFn: async () => {
-      const response = await axios.post(
-        process.env.NEXT_PUBLIC_BACKEND_URL + "/signin",
+    mutationFn: async ({ name, email, password }: SignUpProps) => {
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_BACKEND_URL + "/signup",
         {
-          name,
-          email,
-          password,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, email, password }),
         }
       );
-
-      console.log("response.data.msg", response.data.msg);
-      if (response.data.msg) {
-        toast.error(response.data.msg);
+      if (!response.ok) {
+        throw new Error("Failed to sign up");
       }
+
+      return await response.json();
     },
   });
-
-  console.log("mutation: ", mutation);
-
   return mutation;
 };

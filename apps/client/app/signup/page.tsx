@@ -24,34 +24,30 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const signUpMutation = useSignUp({ name, email, password });
+  const signUpMutation = useSignUp();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      const { data } = await signUpMutation.mutateAsync();
-      console.log("in the ui", data);
+      await signUpMutation.mutateAsync({ name, email, password });
+      const data = signUpMutation.data;
 
-      if (data && data.token) {
-        console.log("token: ", data.token);
-        console.log("status: ", data.status);
-        localStorage.setItem("user_jwt", data.token);
-        toast.success("Welcome", {
-          style: {
-            borderRadius: "7px",
-            background: "#000000",
-            color: "#fff",
-            border: "1px solid black",
-          },
-        });
-        router.push("/workspace");
-      } else {
-        toast.error("Failed to sign up");
-      }
+      console.log("token: ", data.token);
+      localStorage.setItem("user_jwt", data.token);
+      toast.success("Welcome", {
+        style: {
+          borderRadius: "7px",
+          background: "#000000",
+          color: "#fff",
+          border: "1px solid black",
+        },
+      });
+      router.push("/workspace");
     } catch (error) {
+      // Handle error
       console.error("Signup error:", error);
-      toast.error("Failed to sign up");
+      toast.error("Email Already Exists");
     }
   };
 
@@ -103,7 +99,11 @@ export default function LoginPage() {
               </span>
             </CardContent>
             <CardFooter className="flex flex-col">
-              <Button className="w-full" onClick={handleSubmit}>
+              <Button
+                className="w-full"
+                onClick={handleSubmit}
+                disabled={signUpMutation.isPending}
+              >
                 {signUpMutation.isPending ? (
                   <>
                     <Loader />
