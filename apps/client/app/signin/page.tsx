@@ -22,8 +22,6 @@ export default function LoginPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    console.log(name, email, password);
   }
 
   return (

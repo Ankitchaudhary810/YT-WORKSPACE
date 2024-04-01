@@ -29,10 +29,24 @@ export const useSignUp = () => {
 };
 
 export const useCurrentUser = () => {
-
   const query = useQuery({
     queryKey: ["curent-user"],
-    queryFn: () => 
+    queryFn: async () => {
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_BACKEND_URL + "/me",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("user_jwt")}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to sign in");
+      }
+      return await response.json();
+    },
   });
-
+  console.log("query: ", query);
+  return { ...query, user: query.data };
 };
