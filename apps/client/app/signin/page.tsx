@@ -13,12 +13,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@radix-ui/react-label";
 import Link from "next/link";
+import { useCurrentUser } from "@/hooks/user";
 
 export default function LoginPage() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { user } = useCurrentUser();
+  console.log("current user: ", user);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

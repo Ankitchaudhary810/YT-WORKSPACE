@@ -126,14 +126,18 @@ class UserService {
 
   public static async GetMe(req: Request, res: Response) {
     try {
-      const userId = req.headers["userId"];
+      let userId = req.headers["userId"];
 
-      if (!userId) return res.sendStatus(301);
-      if (typeof userId !== "string") return res.sendStatus(301);
+      if (!userId) {
+        console.log("User ID not found in headers");
+        return res.sendStatus(400);
+      }
+
+      const userIdStr = typeof userId === "string" ? userId : userId.toString();
 
       const user = await prisma.user.findUnique({
         where: {
-          id: userId,
+          id: userIdStr,
         },
         select: {
           id: true,
@@ -144,10 +148,16 @@ class UserService {
         },
       });
 
+      if (!user) {
+        console.log("User not found in database");
+        return res.sendStatus(404);
+      }
+
+      console.log("User found:", user);
       return res.status(200).json(user);
     } catch (error) {
       console.log("Error while GetMe", error);
-      return res.sendStatus(501);
+      return res.sendStatus(500);
     }
   }
 }

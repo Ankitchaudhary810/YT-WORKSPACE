@@ -47,6 +47,6 @@ export const useCurrentUser = () => {
       return await response.json();
     },
   });
-  console.log("query: ", query);
-  return { ...query, user: query.data };
+  console.log("query data: ", query.data);
+  return { ...query, user: query };
 };

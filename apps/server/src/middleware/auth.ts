@@ -8,13 +8,9 @@ class Auth {
   ) {
     try {
       const authHeader = req.headers.authorization;
-      console.log(authHeader);
       if (authHeader) {
         const token = authHeader.split(" ")[1];
         jwt.verify(token, process.env.SECRET!, (err, decodedToken) => {
-          console.log(err);
-          console.log(decodedToken);
-
           if (err) {
             return res.sendStatus(403);
           }
@@ -29,6 +25,7 @@ class Auth {
           req.headers["userId"] = decodedToken.id;
           req.headers["userRole"] = decodedToken.role;
           req.headers["userEmail"] = decodedToken.email;
+          console.log("calling next function");
           next();
         });
       } else {
@@ -47,7 +44,6 @@ class Auth {
   ) {
     try {
       const authHeader = req.headers.authorization;
-      console.log(authHeader);
       if (authHeader) {
         const token = authHeader.split(" ")[1];
         jwt.verify(token, process.env.SECRET!, (err, decodedToken) => {
