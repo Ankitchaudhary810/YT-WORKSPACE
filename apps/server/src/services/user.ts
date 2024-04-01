@@ -123,6 +123,33 @@ class UserService {
       return res.sendStatus(501);
     }
   }
+
+  public static async GetMe(req: Request, res: Response) {
+    try {
+      const userId = req.headers["userId"];
+
+      if (!userId) return res.sendStatus(301);
+      if (typeof userId !== "string") return res.sendStatus(301);
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          editors: true,
+          workspace: true,
+        },
+      });
+
+      return res.status(200).json(user);
+    } catch (error) {
+      console.log("Error while GetMe", error);
+      return res.sendStatus(501);
+    }
+  }
 }
 
 export default UserService;

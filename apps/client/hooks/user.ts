@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -26,4 +26,13 @@ export const useSignUp = () => {
     },
   });
   return mutation;
+};
+
+export const useCurrentUser = () => {
+
+  const query = useQuery({
+    queryKey: ["curent-user"],
+    queryFn: () => 
+  });
+
 };

@@ -8,6 +8,7 @@ const router = express.Router();
 // usre logic
 router.route("/signin").post(UserService.handleSignin);
 router.route("/signup").post(UserService.handleSignup);
+router.route("/me").get(Auth.userAuth, UserService.GetMe);
 
 // editor logic
 router.route("/create-editor").post(Auth.userAuth, UserService.CreateEditor);
