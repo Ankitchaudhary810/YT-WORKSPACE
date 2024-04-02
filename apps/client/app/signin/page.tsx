@@ -20,8 +20,8 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user } = useCurrentUser();
-  console.log("current user: ", user);
+  // const { user } = useCurrentUser();
+  // console.log(user);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

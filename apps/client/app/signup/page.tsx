@@ -23,31 +23,28 @@ export default function LoginPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const signUpMutation = useSignUp();
+  const { signUp, loading, error, data, status } = useSignUp();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      await signUpMutation.mutateAsync({ name, email, password });
-      const data = signUpMutation.data;
+      await signUp({ name, email, password });
+      if (status === 200) {
+        console.log(loading, error, data, status);
 
-      console.log("token: ", data.token);
-      localStorage.setItem("user_jwt", data.token);
-      toast.success("Welcome", {
-        style: {
-          borderRadius: "7px",
-          background: "#000000",
-          color: "#fff",
-          border: "1px solid black",
-        },
-      });
-      router.push("/workspace");
+        toast.success("Sign Up Successful!");
+        // router.push("/signin");
+      } else if (status === 400) {
+        toast.error("Email Already Exits");
+      }
     } catch (error) {
-      // Handle error
       console.error("Signup error:", error);
-      toast.error("Email Already Exists");
+      toast.error("Failed To Sign Up");
+    } finally {
+      setEmail("");
+      setName("");
+      setPassword("");
     }
   };
 
@@ -63,6 +60,11 @@ export default function LoginPage() {
               <CardDescription className="text-center">
                 Enter your email and password to sign up
               </CardDescription>
+              {error && (
+                <CardDescription className="text-center">
+                  {error}
+                </CardDescription>
+              )}
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="grid gap-2">
@@ -102,9 +104,9 @@ export default function LoginPage() {
               <Button
                 className="w-full"
                 onClick={handleSubmit}
-                disabled={signUpMutation.isPending}
+                disabled={loading}
               >
-                {signUpMutation.isPending ? (
+                {loading ? (
                   <>
                     <Loader />
                   </>
