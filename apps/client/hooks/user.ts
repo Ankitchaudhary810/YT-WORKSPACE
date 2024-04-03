@@ -40,7 +40,7 @@ export const useSignUp = () => {
 
 export const useCurrentUser = () => {
   const query = useQuery({
-    queryKey: ["curent-user"],
+    queryKey: ["current-user"],
     queryFn: async () => {
       const response = await fetch(
         process.env.NEXT_PUBLIC_BACKEND_URL + "/me",

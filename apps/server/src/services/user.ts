@@ -26,7 +26,7 @@ class UserService {
         { id: user.id, email: user.email, role: "User" },
         process.env.SECRET!
       );
-      return res.status(200).json({ token });
+      return res.status(200).end();
     } catch (error) {
       console.log("Error while signup", error);
       return res.sendStatus(501);
@@ -42,7 +42,7 @@ class UserService {
         },
       });
 
-      if (!user) return res.status(403).json({ msg: "Email Already Exist" });
+      if (!user) return res.status(403).json({ msg: "Email Already Exist!" });
 
       if (!(await bcrypt.compare(password, user.password))) {
         return res.status(403).json({ msg: "Password not Match" });
@@ -52,7 +52,7 @@ class UserService {
         { id: user.id, email: user.email, role: "User" },
         process.env.SECRET!
       );
-      return res.status(200).json({ token });
+      return res.status(200).json(token);
     } catch (error) {
       console.log("Error while signin", error);
       return res.sendStatus(501);

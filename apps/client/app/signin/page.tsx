@@ -38,16 +38,22 @@ export default function LoginPage() {
           body: JSON.stringify({ email, password }),
         }
       );
-      setLoading(false);
+
       if (response.status === 200) {
+        const token = await response.json();
+        window.localStorage.setItem("user_jwt", token);
         toast.success("Sign In Successful!");
         router.push("/workspace");
       } else if (response.status === 400) {
         toast.error("Data Not Found.");
       }
     } catch (error) {
-      console.error("Signup error:", error);
+      console.error("SignIn error:", error);
       toast.error("Failed To Sign In");
+    } finally {
+      setEmail("");
+      setPassword("");
+      setLoading(false);
     }
   };
 
