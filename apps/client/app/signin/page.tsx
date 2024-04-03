@@ -16,10 +16,11 @@ import Link from "next/link";
 import { useCurrentUser } from "@/hooks/user";
 import toast from "react-hot-toast";
 import Loader from "@/components/ui/Loader";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function LoginPage() {
   const router = useRouter();
-
+  const queryClient = useQueryClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,8 @@ export default function LoginPage() {
       if (response.status === 200) {
         const token = await response.json();
         window.localStorage.setItem("user_jwt", token);
-        toast.success("Sign In Successful!");
+        queryClient.invalidateQueries({ queryKey: ["current-user"] });
+        await toast.success("Sign In Successful!");
         router.push("/workspace");
       } else if (response.status === 400) {
         toast.error("Data Not Found.");
