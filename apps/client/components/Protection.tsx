@@ -6,6 +6,8 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { user } = useCurrentUser();
 
+  console.log("user from the protection: ", user);
+
   useEffect(() => {
     if (!user) {
       router.push("/signin");

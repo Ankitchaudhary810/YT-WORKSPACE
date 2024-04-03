@@ -52,7 +52,7 @@ export const useCurrentUser = () => {
         }
       );
       if (!response.ok) {
-        throw new Error("Failed to sign in");
+        throw new Error("Failed to find the current user");
       }
       return await response.json();
     },
