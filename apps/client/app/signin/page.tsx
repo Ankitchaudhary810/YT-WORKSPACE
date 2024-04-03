@@ -14,18 +14,42 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@radix-ui/react-label";
 import Link from "next/link";
 import { useCurrentUser } from "@/hooks/user";
+import toast from "react-hot-toast";
+import Loader from "@/components/ui/Loader";
 
 export default function LoginPage() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const { user } = useCurrentUser();
-  // console.log(user);
+  const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  }
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/signin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+      setLoading(false);
+      if (response.status === 200) {
+        toast.success("Sign In Successful!");
+        router.push("/workspace");
+      } else if (response.status === 400) {
+        toast.error("Data Not Found.");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      toast.error("Failed To Sign In");
+    }
+  };
 
   return (
     <>
@@ -67,8 +91,12 @@ export default function LoginPage() {
               </span>
             </CardContent>
             <CardFooter className="flex flex-col">
-              <Button className="w-full" onClick={handleSubmit}>
-                Sign Up
+              <Button
+                className="w-full"
+                onClick={handleSubmit}
+                disabled={loading}
+              >
+                {loading ? <Loader /> : "Sign In"}
               </Button>
               <p className="mt-2 text-xs text-center text-gray-700">
                 {" "}
