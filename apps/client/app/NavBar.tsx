@@ -20,8 +20,11 @@ const NavBar = () => {
   const router = useRouter();
 
   function handleSignOut() {
+    if (localStorage.getItem("user_jwt") === null) {
+      return;
+    }
     localStorage.clear();
-    toast.success("Signout");
+    toast.success("Signout Success!");
     router.push("/");
   }
 
@@ -39,7 +42,7 @@ const NavBar = () => {
                   link.href === currentPath
                     ? "text-black bg-slate-100 outline outline-1"
                     : "text-white"
-                } hover:text-zinc-500 transition-colors px-2 py-1 rounded`}
+                }  transition-colors px-2 py-1 rounded`}
                 href={link.href}
               >
                 {link.label}

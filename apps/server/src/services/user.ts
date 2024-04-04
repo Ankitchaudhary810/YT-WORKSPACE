@@ -42,7 +42,7 @@ class UserService {
         },
       });
 
-      if (!user) return res.status(403).json({ msg: "Email Already Exist!" });
+      if (!user) return res.status(402).json({ msg: "Email Not Found!" });
 
       if (!(await bcrypt.compare(password, user.password))) {
         return res.status(403).json({ msg: "Password not Match" });

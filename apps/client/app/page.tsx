@@ -36,9 +36,6 @@ export default function Home() {
             alt="home-image"
             width={600}
             height={600}
-            loading="lazy"
-            className="transition-opacity opacity-0 duration-[1.3s]"
-            onLoadingComplete={(image) => image.classList.remove("opacity-0")}
           ></Image>
         </div>
 

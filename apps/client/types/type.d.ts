@@ -8,3 +8,10 @@ interface LoginProps {
   email: string;
   password: string;
 }
+
+interface VideoCardProps {
+  videoUrl: string;
+  title: string;
+  description: string;
+  uploadStatus: string;
+}

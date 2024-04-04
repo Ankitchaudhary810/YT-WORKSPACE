@@ -6,44 +6,10 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-export const useSignUp = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [status, setStatus] = useState(0);
-
-  const signUp = async ({ name, email, password }: SignUpProps) => {
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/signup`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, email, password }),
-        }
-      );
-      setStatus(response.status);
-      const responseData = await response.json();
-      if (!response.ok) {
-        throw new Error(responseData.msg || "Something went wrong");
-      }
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return { signUp, loading, error, status };
-};
-
 export const useCurrentUser = () => {
   const router = useRouter();
 
   if (localStorage.getItem("user_jwt") === null) {
-    toast.error("Not Authenticated");
     router.push("/signin");
   }
   const query = useQuery({

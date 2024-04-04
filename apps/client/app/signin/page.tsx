@@ -46,8 +46,10 @@ export default function LoginPage() {
         queryClient.invalidateQueries({ queryKey: ["current-user"] });
         await toast.success("Sign In Successful!");
         router.push("/workspace");
-      } else if (response.status === 400) {
-        toast.error("Data Not Found.");
+      } else if (response.status === 402) {
+        toast.error("Email Not Found.");
+      } else if (response.status === 403) {
+        toast.error("Wrong Password");
       }
     } catch (error) {
       console.error("SignIn error:", error);
