@@ -10,8 +10,8 @@ interface LoginProps {
 }
 
 interface VideoCardProps {
-  videoUrl: string;
+  aws_s3_url: string;
   title: string;
   description: string;
-  uploadStatus: string;
+  status: string;
 }

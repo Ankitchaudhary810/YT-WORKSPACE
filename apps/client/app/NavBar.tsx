@@ -42,7 +42,7 @@ const NavBar = () => {
                   link.href === currentPath
                     ? "text-black bg-slate-100 outline outline-1"
                     : "text-white"
-                }  transition-colors px-2 py-1 rounded`}
+                } transition-colors px-2 py-1 rounded`}
                 href={link.href}
               >
                 {link.label}
