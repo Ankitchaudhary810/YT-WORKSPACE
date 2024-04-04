@@ -4,6 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { CiVideoOn } from "react-icons/ci";
+import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const NavBar = () => {
   const links = [
@@ -13,6 +16,14 @@ const NavBar = () => {
   ];
 
   const currentPath = usePathname();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  function handleSignOut() {
+    localStorage.clear();
+    toast.success("Signout");
+    router.push("/");
+  }
 
   return (
     <>
@@ -28,7 +39,7 @@ const NavBar = () => {
                   link.href === currentPath
                     ? "text-black bg-slate-100 outline outline-1"
                     : "text-white"
-                } hover:text-zinc-800 transition-colors px-2 py-1 rounded`}
+                } hover:text-zinc-500 transition-colors px-2 py-1 rounded`}
                 href={link.href}
               >
                 {link.label}
@@ -36,7 +47,7 @@ const NavBar = () => {
             </li>
           ))}
         </ul>
-        <Button variant="ghost" className="py-1 my-1 ">
+        <Button variant="ghost" className="py-1 my-1" onClick={handleSignOut}>
           Sign Out
         </Button>
       </nav>

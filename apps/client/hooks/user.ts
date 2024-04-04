@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export const useSignUp = () => {
   const [loading, setLoading] = useState(false);
@@ -39,6 +40,12 @@ export const useSignUp = () => {
 };
 
 export const useCurrentUser = () => {
+  const router = useRouter();
+
+  if (localStorage.getItem("user_jwt") === null) {
+    toast.error("Not Authenticated");
+    router.push("/signin");
+  }
   const query = useQuery({
     queryKey: ["current-user"],
     queryFn: async () => {
@@ -59,5 +66,3 @@ export const useCurrentUser = () => {
   });
   return { ...query, user: query.data };
 };
-
-export const useSignIn = () => {};
