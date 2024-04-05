@@ -18,6 +18,11 @@ const VideoCard: React.FC<VideoCardProps> = ({
   dateTime,
 }) => {
   const timeAgo = calculateTimeAgo(dateTime);
+
+  const handleUpload = () => {
+    alert("hi...");
+  };
+
   return (
     <Card className="max-w-96 bg-black text-white">
       <CardHeader>
@@ -42,7 +47,9 @@ const VideoCard: React.FC<VideoCardProps> = ({
           </Badge>
         </div>
         <div>
-          <Button className="text-[10px] p-2">Edit/Upload</Button>
+          <Button className="text-sm p-2" onClick={handleUpload}>
+            upload
+          </Button>
         </div>
       </CardFooter>
     </Card>
@@ -51,7 +58,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
 export default VideoCard;
 
-const calculateTimeAgo = (dateTime: Date) => {
+export const calculateTimeAgo = (dateTime: Date) => {
   const currentTime: number = Date.now();
   const pastTime: number = new Date(dateTime).getTime();
 
