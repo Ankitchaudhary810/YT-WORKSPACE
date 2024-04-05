@@ -52,10 +52,7 @@ class WorkspaceService {
       console.log("Upload response:", response.data);
 
       const aws_video_url: string =
-        "https://yt-workspace.s3.ap-south-1.amazonaws.com/uploads/" +
-        userid +
-        "/video/" +
-        fileName;
+        process.env.AWS_USER_VIDEO_PATH + userid + "/video/" + fileName;
 
       const workspace = await prisma.workspace.create({
         data: {

@@ -19,9 +19,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
 }) => {
   const timeAgo = calculateTimeAgo(dateTime);
 
-  const handleUpload = () => {
-    alert("hi...");
-  };
+  const handleUpload = () => {};
 
   return (
     <Card className="max-w-96 bg-black text-white">
