@@ -14,4 +14,5 @@ interface VideoCardProps {
   title: string;
   description: string;
   status: string;
+  dateTime: Date;
 }

@@ -9,19 +9,18 @@ const page = () => {
   console.log("user: ", user?.workspace);
   return (
     <main className="p-2 m-2">
-      <ProtectedRoute>
-        <div className="text-center">Workspace.</div>
-        {user &&
-          user.workspace &&
-          user.workspace.map((workspace: any) => (
-            <VideoCard
-              title={workspace.title}
-              description={workspace.description}
-              status={workspace.status}
-              aws_s3_url={workspace.aws_s3_url}
-            />
-          ))}
-      </ProtectedRoute>
+      <div className="text-center">Workspace.</div>
+      {user &&
+        user.workspace &&
+        user.workspace.map((workspace: any) => (
+          <VideoCard
+            title={workspace.title}
+            description={workspace.description}
+            status={workspace.status}
+            aws_s3_url={workspace.aws_s3_url}
+            dateTime={new Date(workspace.createdAt)}
+          />
+        ))}
     </main>
   );
 };
