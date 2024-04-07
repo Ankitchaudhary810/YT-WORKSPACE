@@ -74,6 +74,8 @@ class WorkspaceService {
       return res.status(501).json({ msg: "Internal Server Error" });
     }
   }
+
+  public static async uploadVideoToYoutube(req: Request, res: Response) {}
 }
 
 export default WorkspaceService;
