@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!user) {
-      toast.error("Authenticated your Self");
+      toast.error("Not Authenticated");
       router.push("/signin");
     }
   }, [user]);

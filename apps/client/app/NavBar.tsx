@@ -24,6 +24,7 @@ const NavBar = () => {
       return;
     }
     localStorage.clear();
+    queryClient.invalidateQueries({ queryKey: ["current-user"] });
     toast.success("Signout Success!");
     router.push("/");
   }

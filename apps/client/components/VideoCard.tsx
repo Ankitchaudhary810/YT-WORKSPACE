@@ -35,7 +35,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
             Your browser does not support the video tag.
           </video>
         </CardContent>
-        <h1 className="text-sm">{timeAgo}</h1>
+        <h1 className="text-[13px]">{timeAgo}</h1>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
@@ -45,8 +45,12 @@ const VideoCard: React.FC<VideoCardProps> = ({
           </Badge>
         </div>
         <div>
-          <Button className="text-sm p-2" onClick={handleUpload}>
-            upload
+          <Button
+            className="text-sm p-2"
+            variant={"ghost"}
+            onClick={handleUpload}
+          >
+            Upload
           </Button>
         </div>
       </CardFooter>

@@ -7,11 +7,6 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 export const useCurrentUser = () => {
-  const router = useRouter();
-
-  if (localStorage.getItem("user_jwt") === null) {
-    router.push("/signin");
-  }
   const query = useQuery({
     queryKey: ["current-user"],
     queryFn: async () => {
@@ -22,6 +17,7 @@ export const useCurrentUser = () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("user_jwt")}`,
           },
+          cache: "no-cache",
         }
       );
       if (!response.ok) {
