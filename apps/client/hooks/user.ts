@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 export const useCurrentUser = () => {
   const query = useQuery({
     queryKey: ["current-user"],
+
     queryFn: async () => {
       const response = await fetch(
         process.env.NEXT_PUBLIC_BACKEND_URL + "/me",
@@ -25,6 +26,7 @@ export const useCurrentUser = () => {
       }
       return await response.json();
     },
+    staleTime: 0,
   });
   return { ...query, user: query.data };
 };
