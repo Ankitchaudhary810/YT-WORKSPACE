@@ -3,7 +3,7 @@ import { prisma } from "../prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import axios from "axios";
-import { getSignedUrlForAws } from "../utility";
+import { getSignedUrlForAws, youtube } from "../utility";
 import fs from "fs";
 class WorkspaceService {
   public static async uploadVideo(req: Request, res: Response) {
@@ -75,7 +75,40 @@ class WorkspaceService {
     }
   }
 
-  public static async uploadVideoToYoutube(req: Request, res: Response) {}
+  public static async uploadVideoToYoutube(req: Request, res: Response) {
+    const videoDetails = {
+      title: "Video Title",
+      description: "Video Description",
+      tags: ["tag1", "tag2", "tag3"],
+      categoryId: "22",
+      privacyStatus: "private",
+    };
+
+    const response = await axios.get(process.env.AWS_S3_VIDEO_URL!, {
+      responseType: "stream",
+    });
+
+    const upldateStatus = await youtube.videos.insert({
+      part: ["snippet", "status"],
+      requestBody: {
+        snippet: {
+          title: videoDetails.title,
+          description: videoDetails.description,
+          tags: videoDetails.tags,
+          categoryId: videoDetails.categoryId,
+        },
+        status: {
+          privacyStatus: videoDetails.privacyStatus,
+        },
+      },
+      media: {
+        mimeType: "video/*",
+        body: response.data,
+      },
+    });
+
+    console.log("Video uploaded to YouTube:", upldateStatus.data);
+  }
 }
 
 export default WorkspaceService;

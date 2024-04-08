@@ -11,8 +11,7 @@ router
   .route("/upload-video")
   .get(Auth.editorAuth, upload.single("file"), WorkspaceService.uploadVideo);
 
-router
-  .route("/upload-to-youtube")
-  .post(Auth.userAuth, WorkspaceService.uploadVideoToYoutube);
+// Testing Mode.
+router.route("/upload-to-youtube").post(WorkspaceService.uploadVideoToYoutube);
 
 export default router;
