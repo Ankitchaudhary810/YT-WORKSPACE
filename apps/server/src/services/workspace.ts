@@ -3,8 +3,10 @@ import { prisma } from "../prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import axios from "axios";
-import { getSignedUrlForAws, youtube } from "../utility";
+import { getSignedUrlForAws, oauth2Client, youtube } from "../utility";
+import { OAuth2Client } from "google-auth-library";
 import fs from "fs";
+import { google } from "googleapis";
 class WorkspaceService {
   public static async uploadVideo(req: Request, res: Response) {
     try {
@@ -75,6 +77,21 @@ class WorkspaceService {
     }
   }
 
+  public static async handleOAuth2Callback(req: Request, res: Response) {
+    const { code } = req.query;
+    if (!code || typeof code !== "string") {
+      return res.status(400).send("Invalid authorization code");
+    }
+
+    try {
+      const { tokens } = await oauth2Client.getToken(code);
+      oauth2Client.setCredentials(tokens);
+      res.send("Authentication successful! You can now close this window.");
+    } catch (error) {
+      console.error("Error exchanging authorization code for tokens:", error);
+      res.status(500).send("Failed to authenticate");
+    }
+  }
   public static async uploadVideoToYoutube(req: Request, res: Response) {
     const videoDetails = {
       title: "Video Title",
@@ -84,30 +101,43 @@ class WorkspaceService {
       privacyStatus: "private",
     };
 
-    const response = await axios.get(process.env.AWS_S3_VIDEO_URL!, {
-      responseType: "stream",
-    });
+    try {
+      // Fetch video from AWS S3
+      const response = await axios.get(process.env.AWS_S3_VIDEO_URL!, {
+        responseType: "stream",
+      });
 
-    const upldateStatus = await youtube.videos.insert({
-      part: ["snippet", "status"],
-      requestBody: {
-        snippet: {
-          title: videoDetails.title,
-          description: videoDetails.description,
-          tags: videoDetails.tags,
-          categoryId: videoDetails.categoryId,
-        },
-        status: {
-          privacyStatus: videoDetails.privacyStatus,
-        },
-      },
-      media: {
-        mimeType: "video/*",
-        body: response.data,
-      },
-    });
+      // Upload video to YouTube
+      const youtube = google.youtube({
+        version: "v3",
+        auth: oauth2Client,
+      });
 
-    console.log("Video uploaded to YouTube:", upldateStatus.data);
+      const uploadResponse = await youtube.videos.insert({
+        part: ["snippet", "status"],
+        requestBody: {
+          snippet: {
+            title: videoDetails.title,
+            description: videoDetails.description,
+            tags: videoDetails.tags,
+            categoryId: videoDetails.categoryId,
+          },
+          status: {
+            privacyStatus: videoDetails.privacyStatus,
+          },
+        },
+        media: {
+          mimeType: "video/*",
+          body: response.data,
+        },
+      });
+
+      console.log("Video uploaded to YouTube:", uploadResponse.data);
+      res.send("Video uploaded to YouTube!");
+    } catch (error) {
+      console.error("Error uploading video to YouTube:", error);
+      res.status(500).send("Failed to upload video to YouTube");
+    }
   }
 }
 

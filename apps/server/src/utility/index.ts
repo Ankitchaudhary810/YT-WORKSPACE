@@ -2,6 +2,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import multer from "multer";
 import { google } from "googleapis";
+import { OAuth2Client } from "google-auth-library";
 
 const s3Client = new S3Client({
   credentials: {
@@ -40,3 +41,15 @@ export const youtube = google.youtube({
   version: "v3",
   auth: process.env.YOUTUBE_API_KEY,
 });
+
+export const oauth2Client = new OAuth2Client({
+  clientId: process.env.OAUTH_CLIENT_ID,
+  clientSecret: process.env.OAUTH_CLIENT_SECRET,
+});
+
+export const generateAuthUrl = () => {
+  return oauth2Client.generateAuthUrl({
+    access_type: "offline",
+    scope: ["https://www.googleapis.com/auth/youtube.upload"],
+  });
+};
