@@ -107,6 +107,21 @@ class WorkspaceService {
         responseType: "stream",
       });
 
+      // Check if oauth2Client is properly configured
+      if (!oauth2Client) {
+        console.error("OAuth2 client is not properly configured");
+        return res.status(500).send("OAuth2 client is not properly configured");
+      }
+
+      // Use oauth2Client for authentication
+      oauth2Client.on("tokens", (tokens) => {
+        if (tokens.refresh_token) {
+          // store the refresh token in your database!
+          console.log("Refresh token:", tokens.refresh_token);
+        }
+        console.log("Access token:", tokens.access_token);
+      });
+
       // Upload video to YouTube
       const youtube = google.youtube({
         version: "v3",
