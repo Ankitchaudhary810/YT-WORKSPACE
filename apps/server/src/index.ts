@@ -21,5 +21,5 @@ app.use("/api/v1", userRouter);
 app.use("/api/v1", workspaceRouter);
 
 app.listen(process.env.PORT, () => {
-  console.log("Server is running at port ", process.env.PORT);
+  console.log("Server is running at port", process.env.PORT);
 });

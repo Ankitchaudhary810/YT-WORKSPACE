@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -9,6 +9,7 @@ import {
 } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 const VideoCard: React.FC<VideoCardProps> = ({
   aws_s3_url,
@@ -19,7 +20,16 @@ const VideoCard: React.FC<VideoCardProps> = ({
 }) => {
   const timeAgo = calculateTimeAgo(dateTime);
 
-  const handleUpload = () => {};
+  const [url, setUrl] = useState("");
+
+  const handleUpload = async () => {
+    const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/yt-upload");
+
+    const data = await res.json();
+    setUrl(data);
+
+    console.log(data.toString());
+  };
 
   return (
     <Card className="max-w-96 bg-black text-white">
@@ -53,6 +63,8 @@ const VideoCard: React.FC<VideoCardProps> = ({
             Upload
           </Button>
         </div>
+
+        <Link href={`${url}`}>{url}</Link>
       </CardFooter>
     </Card>
   );
