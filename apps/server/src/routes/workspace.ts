@@ -3,7 +3,10 @@ import { prisma } from "../prisma";
 import express from "express";
 import WorkspaceService from "../services/workspace";
 import { oauth2Client, upload } from "../utility";
-import { google } from "googleapis";
+import axios from "axios";
+
+const { google } = require("googleapis");
+const fs = require("fs");
 
 const router = express.Router();
 
@@ -12,25 +15,55 @@ router
   .route("/upload-video")
   .get(Auth.editorAuth, upload.single("file"), WorkspaceService.uploadVideo);
 
-const oAuth2Client = new google.auth.OAuth2({
-  clientId: process.env.OAUTH_CLIENT_ID,
-  clientSecret: process.env.OAUTH_CLIENT_SECRET,
-  redirectUri: process.env.REDIRECT_URL,
+const privateKey = fs.readFileSync(
+  "./src/routes/client_secret_1046797363940-ee4ntsgg3c7esq8tdn1m7iaeol52q7ni.apps.googleusercontent.com.json"
+);
+
+const auth = new google.auth.GoogleAuth(
+  {
+    credentials: {
+      client_email: "ankitchaudhary810@gmail.com",
+      private_key: privateKey,
+    },
+    scopes: ["https://www.googleapis.com/auth/youtube.upload"],
+  },
+  console.log("GoogleAuth")
+);
+
+const youtube = google.youtube({
+  version: "v3",
+  auth: auth,
 });
 
-const isAuthenticated = false;
-
-router.get("/yt-upload", (req, res) => {
-  if (!isAuthenticated) {
-    var url = oauth2Client.generateAuthUrl({
-      access_type: "offline",
-      scope: [
-        "https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/userinfo.profile",
-      ].join(" "),
+async function uploadVideo() {
+  try {
+    console.log("uploadVideo");
+    const video = await axios.get(process.env.AWS_S3_VIDEO_URL!, {
+      responseType: "stream",
     });
 
-    return res.json(url);
+    const response = await youtube.videos.insert({
+      part: "snippet,status",
+      requestBody: {
+        snippet: {
+          title: "My Test Video",
+          description: "Description of my test video",
+        },
+        status: {
+          privacyStatus: "private",
+        },
+      },
+      media: {
+        body: video.data,
+      },
+    });
+
+    console.log("Video uploaded:", response.data);
+  } catch (error) {
+    console.error("Error uploading video:", error);
   }
-});
+}
+
+uploadVideo();
 
 export default router;

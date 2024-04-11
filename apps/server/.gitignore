@@ -1,3 +1,5 @@
 node_modules
 # Keep environment variables out of version control
 .env
+
+src/routes/client_secret_1046797363940-ee4ntsgg3c7esq8tdn1m7iaeol52q7ni.apps.googleusercontent.com.json
