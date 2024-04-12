@@ -76,6 +76,28 @@ class WorkspaceService {
       return res.status(501).json({ msg: "Internal Server Error" });
     }
   }
+
+  public static async handleGetVideoById(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      if (!id) return;
+
+      const video = await prisma.workspace.findFirst({
+        where: {
+          id: id,
+        },
+      });
+
+      if (!video) return res.status(403);
+
+      console.log(video);
+
+      return res.status(200).json(video);
+    } catch (error) {
+      console.log("Error in handleGetVideoById", error);
+      return res.status(501).json({ msg: "Internal Server Error" });
+    }
+  }
 }
 
 export default WorkspaceService;

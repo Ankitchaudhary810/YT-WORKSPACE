@@ -15,4 +15,8 @@ router
   .route("/upload-video")
   .get(Auth.editorAuth, upload.single("file"), WorkspaceService.uploadVideo);
 
+router
+  .route("/get-video-by-id/:id")
+  .get(Auth.userAuth, WorkspaceService.handleGetVideoById);
+
 export default router;
