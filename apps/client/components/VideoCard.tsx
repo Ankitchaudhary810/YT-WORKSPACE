@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const VideoCard: React.FC<VideoCardProps> = ({
+  id,
   aws_s3_url,
   title,
   description,
@@ -22,8 +23,8 @@ const VideoCard: React.FC<VideoCardProps> = ({
   const timeAgo = calculateTimeAgo(dateTime);
   const router = useRouter();
 
-  const handleUpload = async () => {
-    router.push(`/videoDetails`);
+  const handleUpload = async (id: string) => {
+    router.push(`/workspace/${id}`);
   };
 
   return (
@@ -52,10 +53,10 @@ const VideoCard: React.FC<VideoCardProps> = ({
         <div>
           <Button
             className="text-sm p-2"
-            variant={"ghost"}
-            onClick={handleUpload}
+            variant={"default"}
+            onClick={() => handleUpload(id)}
           >
-            Upload
+            Continue
           </Button>
         </div>
       </CardFooter>

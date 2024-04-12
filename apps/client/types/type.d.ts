@@ -10,6 +10,7 @@ interface LoginProps {
 }
 
 interface VideoCardProps {
+  id: string;
   aws_s3_url: string;
   title: string;
   description: string;

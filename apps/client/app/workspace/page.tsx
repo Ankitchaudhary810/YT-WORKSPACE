@@ -2,18 +2,22 @@
 import { useCurrentUser } from "@/hooks/user";
 import React, { useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
-import ProtectedRoute from "@/components/Protection";
 import VideoCard from "@/components/VideoCard";
+import { useQueryClient } from "@tanstack/react-query";
 
 const page = () => {
   const { user } = useCurrentUser();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!user) {
       router.push("/signin");
     }
-  }, [user]);
+    return () => {
+      queryClient.invalidateQueries({ queryKey: ["current-user"] });
+    };
+  }, [user, router]);
   return (
     <main className="p-2 m-2">
       <div className="text-center">Workspace.</div>
@@ -21,6 +25,7 @@ const page = () => {
         user.workspace &&
         user.workspace.map((workspace: any) => (
           <VideoCard
+            id={workspace.id}
             title={workspace.title}
             description={workspace.description}
             status={workspace.status}
