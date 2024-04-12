@@ -15,7 +15,7 @@ import { Label } from "@radix-ui/react-label";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import Loader from "@/components/ui/Loader";
-import { useSignUp } from "@/hooks/user";
+import { cookies } from "next/headers";
 
 export default function SignUp() {
   const router = useRouter();

@@ -43,6 +43,7 @@ export default function LoginPage() {
       if (response.status === 200) {
         const token = await response.json();
         window.localStorage.setItem("user_jwt", token);
+
         queryClient.invalidateQueries({ queryKey: ["current-user"] });
         await toast.success("Sign In Successful!");
         router.push("/workspace");

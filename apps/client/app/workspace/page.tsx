@@ -4,20 +4,18 @@ import React, { useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
 import VideoCard from "@/components/VideoCard";
 import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const page = () => {
   const { user } = useCurrentUser();
   const router = useRouter();
-  const queryClient = useQueryClient();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!user) {
       router.push("/signin");
     }
-    return () => {
-      queryClient.invalidateQueries({ queryKey: ["current-user"] });
-    };
-  }, [user, router]);
+  }, [user]);
+
   return (
     <main className="p-2 m-2">
       <div className="text-center">Workspace.</div>
