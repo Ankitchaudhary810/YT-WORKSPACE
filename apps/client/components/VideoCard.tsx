@@ -10,6 +10,7 @@ import {
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const VideoCard: React.FC<VideoCardProps> = ({
   aws_s3_url,
@@ -19,16 +20,10 @@ const VideoCard: React.FC<VideoCardProps> = ({
   dateTime,
 }) => {
   const timeAgo = calculateTimeAgo(dateTime);
-
-  const [url, setUrl] = useState("");
+  const router = useRouter();
 
   const handleUpload = async () => {
-    const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/yt-upload");
-
-    const data = await res.json();
-    setUrl(data);
-
-    console.log(data.toString());
+    router.push(`/videoDetails`);
   };
 
   return (
@@ -63,8 +58,6 @@ const VideoCard: React.FC<VideoCardProps> = ({
             Upload
           </Button>
         </div>
-
-        <Link href={`${url}`}>{url}</Link>
       </CardFooter>
     </Card>
   );

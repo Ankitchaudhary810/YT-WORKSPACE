@@ -15,22 +15,20 @@ const page = () => {
     }
   }, [user]);
   return (
-    <ProtectedRoute>
-      <main className="p-2 m-2">
-        <div className="text-center">Workspace.</div>
-        {user &&
-          user.workspace &&
-          user.workspace.map((workspace: any) => (
-            <VideoCard
-              title={workspace.title}
-              description={workspace.description}
-              status={workspace.status}
-              aws_s3_url={workspace.aws_s3_url}
-              dateTime={new Date(workspace.createdAt)}
-            />
-          ))}
-      </main>
-    </ProtectedRoute>
+    <main className="p-2 m-2">
+      <div className="text-center">Workspace.</div>
+      {user &&
+        user.workspace &&
+        user.workspace.map((workspace: any) => (
+          <VideoCard
+            title={workspace.title}
+            description={workspace.description}
+            status={workspace.status}
+            aws_s3_url={workspace.aws_s3_url}
+            dateTime={new Date(workspace.createdAt)}
+          />
+        ))}
+    </main>
   );
 };
 
