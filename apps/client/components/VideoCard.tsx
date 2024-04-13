@@ -28,7 +28,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
   };
 
   return (
-    <Card className="max-w-96 bg-black text-white">
+    <Card className="max-w-96 bg-black text-white ">
       <CardHeader>
         <CardTitle>
           <h3 className="text-sm ">{title}</h3>

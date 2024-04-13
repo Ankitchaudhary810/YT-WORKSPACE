@@ -1,12 +1,12 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 
-export const useVideoById = (id: string) => {
+export const useGetAllWorkspaces = () => {
   const query = useQuery({
-    queryKey: ["video-by-id", id],
+    queryKey: ["video-by-id"],
     queryFn: async () => {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_BACKEND_URL + "/get-video-by-id/" + id,
+        process.env.NEXT_PUBLIC_BACKEND_URL + "/get-user-workspaces",
         {
           method: "GET",
           headers: {
@@ -16,10 +16,10 @@ export const useVideoById = (id: string) => {
         }
       );
       if (!response.ok) {
-        throw new Error("Failed to find the current user");
+        throw new Error("Failed to find the workspaces");
       }
       return await response.json();
     },
   });
-  return { ...query, video: query.data, isLoading: query.isLoading };
+  return { ...query, workspaces: query.data, isLoading: query.isLoading };
 };
