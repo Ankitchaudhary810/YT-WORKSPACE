@@ -25,7 +25,6 @@ class Auth {
           req.headers["userId"] = decodedToken.id;
           req.headers["userRole"] = decodedToken.role;
           req.headers["userEmail"] = decodedToken.email;
-          console.log("calling next function");
           next();
         });
       } else {

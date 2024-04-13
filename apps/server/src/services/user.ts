@@ -129,7 +129,6 @@ class UserService {
       let userId = req.headers["userId"];
 
       if (!userId) {
-        console.log("User ID not found in headers");
         return res.sendStatus(400);
       }
 
@@ -153,7 +152,6 @@ class UserService {
         return res.sendStatus(404);
       }
 
-      console.log("User found:", user);
       return res.status(200).json(user);
     } catch (error) {
       console.log("Error while GetMe", error);

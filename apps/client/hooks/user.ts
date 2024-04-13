@@ -30,3 +30,26 @@ export const useCurrentUser = () => {
   });
   return { ...query, user: query.data };
 };
+
+export const getVideoById = (id: string) => {
+  const query = useQuery({
+    queryKey: ["video-by-id"],
+    queryFn: async () => {
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_BACKEND_URL + "/get-video-by-id/" + id,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("user_jwt")}`,
+          },
+          cache: "no-cache",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to find the current user");
+      }
+      return await response.json();
+    },
+  });
+  return { ...query, video: query.data };
+};
