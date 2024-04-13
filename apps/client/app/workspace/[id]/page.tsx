@@ -1,23 +1,17 @@
-import { Video } from "@/types/type";
-import React from "react";
+"use client";
+import { useVideoById } from "@/hooks/video";
+import { useQueries, useQuery } from "@tanstack/react-query";
 
 interface Props {
   params: { id: string };
-  videoData: Video;
 }
 
-const page = async ({ params: { id }, videoData }: Props) => {
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_BACKEND_URL + "/get-video-by-id/" + id,
-    {
-      headers: {},
-    }
-  );
+const page = ({ params: { id } }: Props) => {
+  console.log("id: ", id);
+  const { video, isLoading } = useVideoById(id);
+  console.log("video: ", video);
 
-  console.log("response: ", response);
-
-  const data = await response.json();
-  console.log(data);
+  if (isLoading) return <p>Loading.....</p>;
   return <div>page</div>;
 };
 
