@@ -1,17 +1,12 @@
 "use client";
+import { useQuery } from "@tanstack/react-query";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-
-export const useCurrentUser = () => {
+export const useVideoById = (id: string) => {
   const query = useQuery({
-    queryKey: ["current-user"],
+    queryKey: ["video-by-id", id],
     queryFn: async () => {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_BACKEND_URL + "/me",
+        process.env.NEXT_PUBLIC_BACKEND_URL + "/get-video-by-id/" + id,
         {
           method: "GET",
           headers: {
@@ -25,7 +20,6 @@ export const useCurrentUser = () => {
       }
       return await response.json();
     },
-    staleTime: 0,
   });
-  return { ...query, user: query.data };
+  return { ...query, video: query.data, isLoading: query.isLoading };
 };

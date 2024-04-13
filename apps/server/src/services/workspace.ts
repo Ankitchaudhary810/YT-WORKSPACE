@@ -98,6 +98,26 @@ class WorkspaceService {
       return res.status(501).json({ msg: "Internal Server Error" });
     }
   }
+
+  public static async handleGetUserWorkspaces(req: Request, res: Response) {
+    try {
+      const userId = req.headers["userId"];
+      if (!userId) return;
+      if (typeof userId !== "string") return;
+      const workspaces = await prisma.user.findFirst({
+        where: {
+          id: userId,
+        },
+        select: {
+          workspace: true,
+        },
+      });
+      return res.json(workspaces?.workspace);
+    } catch (error) {
+      console.log("Error in handleGetUserWorkspaces", error);
+      return res.status(501).json({ msg: "Internal Server Error" });
+    }
+  }
 }
 
 export default WorkspaceService;

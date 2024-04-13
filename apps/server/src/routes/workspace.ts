@@ -19,4 +19,8 @@ router
   .route("/get-video-by-id/:id")
   .get(Auth.userAuth, WorkspaceService.handleGetVideoById);
 
+router
+  .route("/get-user-workspaces")
+  .get(Auth.userAuth, WorkspaceService.handleGetUserWorkspaces);
+
 export default router;
