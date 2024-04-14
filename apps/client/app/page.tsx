@@ -32,8 +32,8 @@ export default function Home() {
           <Image src={HomeImage} alt="home-image" width={600} height={600} />
         </div>
 
-        <div className="w-full lg:w-1/2 mt-10">
-          <h1 className="text-3xl lg:text-5xl font-bold mb-4 lg:mb-6">
+        <div className="w-full lg:w-1/2 sm:mt-28 mt-1">
+          <h1 className="text-3xl lg:text-4xl font-bold mb-4 lg:mb-6">
             Be Productive to Your Youtube.
           </h1>
           <p className="text-base lg:text-lg mb-4 lg:mb-6 text-slate-300">

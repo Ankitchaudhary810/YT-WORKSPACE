@@ -28,6 +28,13 @@ const VideoCard: React.FC<VideoCardProps> = ({
     router.push(`/workspace/${id}`);
   };
 
+  const truncateDescription = (text: string, maxLength: number) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  };
+
   return (
     <Card className="max-w-96 bg-black text-white ">
       <CardHeader>
@@ -43,7 +50,9 @@ const VideoCard: React.FC<VideoCardProps> = ({
           </video>
         </CardContent>
         <h1 className="text-[13px]">{timeAgo}</h1>
-        <CardDescription>{description}</CardDescription>
+        <CardDescription>
+          {truncateDescription(description, 150)}
+        </CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
         <div className="ml-[-10px]">
