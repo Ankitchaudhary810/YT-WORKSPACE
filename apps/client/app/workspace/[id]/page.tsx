@@ -8,7 +8,7 @@ import { useVideoById } from "@/hooks/video";
 import { useState } from "react";
 import { FaYoutube } from "react-icons/fa6";
 import { MdOutlinePublishedWithChanges } from "react-icons/md";
-
+import React from "react";
 interface Props {
   params: { id: string };
 }
@@ -21,6 +21,25 @@ const page = ({ params: { id } }: Props) => {
     description: video?.description,
   });
 
+  const handleChangeInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setVideoData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  React.useEffect(() => {
+    if (!isLoading && video) {
+      setVideoData({
+        title: video.title,
+        description: video.description,
+      });
+    }
+  }, [isLoading, video]);
+
   if (isLoading) {
     return (
       <h1 className="flex items-center justify-center">
@@ -32,9 +51,7 @@ const page = ({ params: { id } }: Props) => {
   return (
     <div className="container mx-auto mt-8 grid grid-cols-1 sm:grid-cols-2 gap-8 text-black">
       <div>
-        <h1 className="text-2xl font-bold mb-4 text-white">
-          {"This is the title"}
-        </h1>
+        <h1 className="text-2xl font-bold mb-4 text-white">{video?.title}</h1>
         <video className="w-full" controls muted>
           <source src={video.aws_s3_url} type="video/mp4" />
           Your browser does not support the video tag.
@@ -45,20 +62,18 @@ const page = ({ params: { id } }: Props) => {
           <div className="flex flex-col gap-4">
             <Input
               type="text"
-              value={"this is the title"}
-              // onChange={handleTitleChange}
+              value={videoData.title}
+              onChange={handleChangeInput}
+              name="title"
               className="border rounded px-4 py-2"
             />
             <Textarea
-              value={"This is the description"}
-              // onChange={handleDescriptionChange}
+              value={videoData.description}
+              onChange={handleChangeInput}
+              name="description"
               className="border border-gray-300 rounded px-4 py-2 h-40"
             />
-            {/* Implement your multi-select component for tags */}
-            <Button
-              variant={"outline"}
-              // onClick={handleSubmit}
-            >
+            <Button variant={"outline"}>
               Save Changes
               <MdOutlinePublishedWithChanges className="ml-1" size={28} />
             </Button>
