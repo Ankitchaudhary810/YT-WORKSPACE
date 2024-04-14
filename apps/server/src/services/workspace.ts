@@ -118,6 +118,28 @@ class WorkspaceService {
       return res.status(501).json({ msg: "Internal Server Error" });
     }
   }
+
+  public static async handleUpdateWorkspaceById(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const { title, description } = req.body;
+      if (!id) return;
+      if (typeof id !== "string") return;
+      const workspace = await prisma.workspace.update({
+        where: {
+          id: id,
+        },
+        data: {
+          title,
+          description,
+        },
+      });
+      return res.status(200);
+    } catch (error) {
+      console.log("Error in handleUpdateWorkspaceById", error);
+      return res.status(501).json({ msg: "Internal Server Error" });
+    }
+  }
 }
 
 export default WorkspaceService;

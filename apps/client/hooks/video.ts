@@ -1,5 +1,5 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useVideoById = (id: string) => {
   const query = useQuery({
@@ -23,3 +23,5 @@ export const useVideoById = (id: string) => {
   });
   return { ...query, video: query.data, isLoading: query.isLoading };
 };
+
+export const useUpdateVideoById = (id: string) => {};

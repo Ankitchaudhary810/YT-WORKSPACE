@@ -23,4 +23,8 @@ router
   .route("/get-user-workspaces")
   .get(Auth.userAuth, WorkspaceService.handleGetUserWorkspaces);
 
+router
+  .route("/update-workspace-by-id/:id")
+  .post(Auth.userAuth, WorkspaceService.handleUpdateWorkspaceById);
+
 export default router;
