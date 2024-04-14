@@ -11,6 +11,7 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { VideoCardProps } from "@/types/type";
 
 const VideoCard: React.FC<VideoCardProps> = ({
   id,
@@ -31,7 +32,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
     <Card className="max-w-96 bg-black text-white ">
       <CardHeader>
         <CardTitle>
-          <h3 className="text-sm ">{title}</h3>
+          <h3 className="text-sm">{title}</h3>
         </CardTitle>
 
         <CardContent>
