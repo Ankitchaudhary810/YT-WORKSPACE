@@ -121,8 +121,8 @@ class WorkspaceService {
     try {
       const id = req.params.id;
       const { title, description } = req.body;
-      if (!id) return;
-      if (typeof id !== "string") return;
+      console.log({ title, description });
+      if (!id || typeof id !== "string") return;
       const workspace = await prisma.workspace.update({
         where: {
           id: id,
@@ -132,7 +132,6 @@ class WorkspaceService {
           description,
         },
       });
-      console.log(workspace);
       return res.status(200).json(workspace);
     } catch (error) {
       console.log("Error in handleUpdateWorkspaceById", error);

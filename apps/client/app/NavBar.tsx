@@ -7,6 +7,7 @@ import { CiVideoOn } from "react-icons/ci";
 import { useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useCurrentUser } from "@/hooks/user";
 
 const NavBar = () => {
   const links = [
@@ -15,6 +16,7 @@ const NavBar = () => {
     { label: "About", href: "/about" },
   ];
 
+  const { user } = useCurrentUser();
   const currentPath = usePathname();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -27,6 +29,10 @@ const NavBar = () => {
     queryClient.clear();
     toast.success("Signout Success!");
     router.push("/");
+  }
+
+  function handleJoin() {
+    router.push("/signin");
   }
 
   return (
@@ -51,9 +57,18 @@ const NavBar = () => {
             </li>
           ))}
         </ul>
-        <Button variant="ghost" className="py-1 my-1" onClick={handleSignOut}>
-          Sign Out
-        </Button>
+
+        {user && (
+          <Button variant="ghost" className="py-1 my-1" onClick={handleSignOut}>
+            Sign Out
+          </Button>
+        )}
+
+        {!user && (
+          <Button variant="ghost" className="py-1 my-1" onClick={handleJoin}>
+            Join.
+          </Button>
+        )}
       </nav>
     </>
   );

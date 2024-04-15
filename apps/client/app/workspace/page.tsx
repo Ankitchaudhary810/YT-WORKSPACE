@@ -30,8 +30,6 @@ const page = () => {
   return (
     <main className="p-2 m-2">
       <div className="grid md:grid-cols-3 gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
-        {/* <div className="text-center">Workspace.</div> */}
-
         {workspaces &&
           workspaces?.map((workspace: Video) => (
             <VideoCard

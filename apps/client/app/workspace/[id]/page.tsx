@@ -16,7 +16,7 @@ interface Props {
 
 const page = ({ params: { id } }: Props) => {
   const { video, isLoading } = useVideoById(id);
-  const { mutateAsync, isPending } = useUpdateVideoById(id);
+  const { mutate, isPending } = useUpdateVideoById(id);
 
   const [videoData, setVideoData] = useState({
     title: video?.title,
@@ -44,11 +44,10 @@ const page = ({ params: { id } }: Props) => {
 
   const handleChanges = async (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log("hi");
     try {
-      await mutateAsync({
-        title: videoData.title,
-        description: videoData.description,
+      await mutate({
+        title: videoData?.title,
+        description: videoData?.description,
       });
     } catch (error) {
       console.error("Error updating video:", error);

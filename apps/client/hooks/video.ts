@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 export const useVideoById = (id: string) => {
   const query = useQuery({
-    queryKey: ["video-by-id"],
+    queryKey: ["video-by-id", id],
     queryFn: async () => {
       const response = await fetch(
         process.env.NEXT_PUBLIC_BACKEND_URL + "/get-video-by-id/" + id,
@@ -46,6 +46,7 @@ export const useUpdateVideoById = (id: string) => {
           cache: "no-cache",
         }
       );
+      console.log(response);
       if (!response.ok) {
         throw new Error("Failed to find the current user");
       }
