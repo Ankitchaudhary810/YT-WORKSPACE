@@ -42,7 +42,7 @@ const page = ({ params: { id } }: Props) => {
     }
   }, [isLoading, video]);
 
-  const handleChanges = async (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+  const handleChanges = async (e: React.MouseEvent) => {
     e.preventDefault();
     console.log("hi");
     try {
@@ -88,13 +88,9 @@ const page = ({ params: { id } }: Props) => {
               name="description"
               className="border border-gray-300 rounded px-4 py-2 h-40"
             />
-            <Button variant={"outline"} type="button">
+            <Button variant={"outline"} type="button" onClick={handleChanges}>
               {isPending ? <Loader /> : "Save Changes"}
-              <MdOutlinePublishedWithChanges
-                className="ml-1"
-                size={28}
-                onClick={handleChanges}
-              />
+              <MdOutlinePublishedWithChanges className="ml-1" size={28} />
             </Button>
             <Button type="button" variant={"secondary"}>
               Upload

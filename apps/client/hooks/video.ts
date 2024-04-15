@@ -36,9 +36,9 @@ export const useUpdateVideoById = (id: string) => {
       description: string;
     }) => {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_BACKEND_URL + "/get-video-by-id/" + id,
+        process.env.NEXT_PUBLIC_BACKEND_URL + "/update-workspace-by-id/" + id,
         {
-          method: "GET",
+          method: "POST",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("user_jwt")}`,
           },

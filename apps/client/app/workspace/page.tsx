@@ -33,7 +33,7 @@ const page = () => {
         {/* <div className="text-center">Workspace.</div> */}
 
         {workspaces &&
-          workspaces.map((workspace: Video) => (
+          workspaces?.map((workspace: Video) => (
             <VideoCard
               id={workspace.id}
               title={workspace.title}

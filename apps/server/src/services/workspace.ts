@@ -132,7 +132,8 @@ class WorkspaceService {
           description,
         },
       });
-      return res.status(200);
+      console.log(workspace);
+      return res.status(200).json(workspace);
     } catch (error) {
       console.log("Error in handleUpdateWorkspaceById", error);
       return res.status(501).json({ msg: "Internal Server Error" });
