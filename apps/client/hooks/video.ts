@@ -1,9 +1,10 @@
 "use client";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 export const useVideoById = (id: string) => {
   const query = useQuery({
-    queryKey: ["video-by-id", id],
+    queryKey: ["video-by-id"],
     queryFn: async () => {
       const response = await fetch(
         process.env.NEXT_PUBLIC_BACKEND_URL + "/get-video-by-id/" + id,
@@ -24,4 +25,42 @@ export const useVideoById = (id: string) => {
   return { ...query, video: query.data, isLoading: query.isLoading };
 };
 
-export const useUpdateVideoById = (id: string) => {};
+export const useUpdateVideoById = (id: string) => {
+  const mutation = useMutation({
+    mutationKey: ["update-workspace-by-id"],
+    mutationFn: async ({
+      title,
+      description,
+    }: {
+      title: string;
+      description: string;
+    }) => {
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_BACKEND_URL + "/get-video-by-id/" + id,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("user_jwt")}`,
+          },
+          body: JSON.stringify({ title, description }),
+          cache: "no-cache",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to find the current user");
+      }
+      return await response.json();
+    },
+    onMutate: async () => {
+      toast.loading("Updating...", { id: "1" });
+    },
+    onSuccess: async () => {
+      toast.success("Updated", { id: "1" });
+    },
+    onError: async () => {
+      toast.error("Fail to update", { id: "1" });
+    },
+  });
+
+  return { ...mutation, data: mutation.data };
+};

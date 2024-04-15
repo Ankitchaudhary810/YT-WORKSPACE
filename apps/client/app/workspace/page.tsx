@@ -12,7 +12,6 @@ import { Video } from "@/types/type";
 const page = () => {
   const { user } = useCurrentUser();
   const { workspaces, isLoading } = useGetAllWorkspaces();
-  console.log("workspace: ", workspaces);
   // const router = useRouter();
 
   // useLayoutEffect(() => {

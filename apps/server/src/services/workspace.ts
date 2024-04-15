@@ -90,8 +90,6 @@ class WorkspaceService {
 
       if (!video) return res.status(403);
 
-      console.log(video);
-
       return res.status(200).json(video);
     } catch (error) {
       console.log("Error in handleGetVideoById", error);

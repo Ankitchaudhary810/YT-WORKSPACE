@@ -8,6 +8,7 @@ import { useVideoById } from "@/hooks/video";
 import { useState } from "react";
 import { FaYoutube } from "react-icons/fa6";
 import { MdOutlinePublishedWithChanges } from "react-icons/md";
+import { useUpdateVideoById } from "@/hooks/video";
 import React from "react";
 interface Props {
   params: { id: string };
@@ -15,6 +16,7 @@ interface Props {
 
 const page = ({ params: { id } }: Props) => {
   const { video, isLoading } = useVideoById(id);
+  const { mutateAsync, isPending } = useUpdateVideoById(id);
 
   const [videoData, setVideoData] = useState({
     title: video?.title,
@@ -39,6 +41,19 @@ const page = ({ params: { id } }: Props) => {
       });
     }
   }, [isLoading, video]);
+
+  const handleChanges = async (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+    e.preventDefault();
+    console.log("hi");
+    try {
+      await mutateAsync({
+        title: videoData.title,
+        description: videoData.description,
+      });
+    } catch (error) {
+      console.error("Error updating video:", error);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -73,9 +88,13 @@ const page = ({ params: { id } }: Props) => {
               name="description"
               className="border border-gray-300 rounded px-4 py-2 h-40"
             />
-            <Button variant={"outline"}>
-              Save Changes
-              <MdOutlinePublishedWithChanges className="ml-1" size={28} />
+            <Button variant={"outline"} type="button">
+              {isPending ? <Loader /> : "Save Changes"}
+              <MdOutlinePublishedWithChanges
+                className="ml-1"
+                size={28}
+                onClick={handleChanges}
+              />
             </Button>
             <Button type="button" variant={"secondary"}>
               Upload

@@ -148,7 +148,6 @@ class UserService {
       });
 
       if (!user) {
-        console.log("User not found in database");
         return res.sendStatus(404);
       }
 
