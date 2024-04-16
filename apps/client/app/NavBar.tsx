@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/user";
+import Head from "next/head";
 
 const NavBar = () => {
   const links = [
