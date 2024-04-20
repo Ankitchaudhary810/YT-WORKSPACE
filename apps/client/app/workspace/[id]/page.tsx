@@ -4,30 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useVideoById, useupdatevideo } from "@/hooks/video";
+import { useVideoById } from "@/hooks/video";
 import { useState } from "react";
 import { FaYoutube } from "react-icons/fa6";
 import { MdOutlinePublishedWithChanges } from "react-icons/md";
+import { useUpdateVideoById } from "@/hooks/video";
 import React from "react";
-import { useMutation } from "@tanstack/react-query";
-
 interface Props {
   params: { id: string };
 }
 
-const Page = ({ params: { id } }: Props) => {
+const page = ({ params: { id } }: Props) => {
   const { video, isLoading } = useVideoById(id);
+  const { mutateAsync, isPending } = useUpdateVideoById(id);
 
   const [videoData, setVideoData] = useState({
-    title: video?.title || "",
-    description: video?.description || "",
+    title: video?.title,
+    description: video?.description,
   });
-
-  const updateVideoMutation = useupdatevideo(
-    videoData.title,
-    videoData.description,
-    id
-  );
 
   const handleChangeInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -48,13 +42,16 @@ const Page = ({ params: { id } }: Props) => {
     }
   }, [isLoading, video]);
 
-  const useUpdateMutation = useMutation({
-    mutationFn: useupdatevideo,
-  });
-
-  const handleChanges = async (e: React.MouseEvent) => {
+  const handleChanges = async (e: React.MouseEvent<SVGElement, MouseEvent>) => {
     e.preventDefault();
-    await useUpdateMutation.mutate;
+    try {
+      await mutateAsync({
+        title: videoData.title,
+        description: videoData.description,
+      });
+    } catch (error) {
+      console.error("Error updating video:", error);
+    }
   };
 
   if (isLoading) {
@@ -70,7 +67,7 @@ const Page = ({ params: { id } }: Props) => {
       <div>
         <h1 className="text-2xl font-bold mb-4 text-white">{video?.title}</h1>
         <video className="w-full" controls muted>
-          <source src={video?.aws_s3_url} type="video/mp4" />
+          <source src={video.aws_s3_url} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
@@ -91,12 +88,10 @@ const Page = ({ params: { id } }: Props) => {
               className="border border-gray-300 rounded px-4 py-2 h-40"
             />
             <Button variant={"outline"} type="button" onClick={handleChanges}>
-              {updateVideoMutation.isLoading ? <Loader /> : "Save Changes"}
-
-              <MdOutlinePublishedWithChanges
-                className={`ml-1 ${updateVideoMutation.isLoading ? "hidden" : "block"}`}
-                size={28}
-              />
+              {isPending ? <Loader /> : "Save Changes"}
+              {!isPending && (
+                <MdOutlinePublishedWithChanges className="ml-1" size={28} />
+              )}
             </Button>
             <Button type="button" variant={"secondary"}>
               Upload
@@ -109,4 +104,4 @@ const Page = ({ params: { id } }: Props) => {
   );
 };
 
-export default Page;
+export default page;

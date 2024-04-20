@@ -27,4 +27,6 @@ router
   .route("/update-workspace-by-id/:id")
   .post(Auth.userAuth, WorkspaceService.handleUpdateWorkspaceById);
 
+router.route("/verify-auth").get(WorkspaceService.handleVerifyUser);
+
 export default router;
