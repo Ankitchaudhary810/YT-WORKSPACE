@@ -3,6 +3,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import multer from "multer";
 import { google } from "googleapis";
 import { OAuth2Client } from "google-auth-library";
+const querystring = require("querystring");
 
 const s3Client = new S3Client({
   credentials: {
@@ -45,11 +46,32 @@ export const youtube = google.youtube({
 export const oauth2Client = new OAuth2Client({
   clientId: process.env.OAUTH_CLIENT_ID,
   clientSecret: process.env.OAUTH_CLIENT_SECRET,
+  redirectUri: process.env.REDIRECT_URL,
 });
 
 export const generateAuthUrl = () => {
   return oauth2Client.generateAuthUrl({
     access_type: "offline",
-    scope: ["https://www.googleapis.com/auth/youtube.upload"],
+    scope:
+      "https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
   });
+};
+
+export const getGoogleAuthURL = () => {
+  const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+  const options = {
+    redirect_uri: `${process.env.REDIRECT_URL}` || "ankit",
+    client_id: process.env.OAUTH_CLIENT_ID || "ankit",
+    access_type: "offline",
+    response_type: "code",
+    prompt: "consent",
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/youtube.upload",
+    ].join(" "),
+  };
+  console.log("Redirect URI:", options.redirect_uri);
+
+  return `${rootUrl}?${querystring.stringify(options)}`;
 };
