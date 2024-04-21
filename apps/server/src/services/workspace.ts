@@ -3,7 +3,12 @@ import { prisma } from "../prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import axios from "axios";
-import { getSignedUrlForAws, oauth2Client, youtube } from "../utility";
+import {
+  generateAuthUrl,
+  getSignedUrlForAws,
+  oauth2Client,
+  youtube,
+} from "../utility";
 import { OAuth2Client } from "google-auth-library";
 import fs from "fs";
 import { google } from "googleapis";
@@ -139,7 +144,11 @@ class WorkspaceService {
     }
   }
 
-  public static async handleVerifyUser(req: Request, res: Response) {}
+  public static async handleVerifyUser(req: Request, res: Response) {
+    console.log(3);
+    const url = generateAuthUrl();
+    return res.json(url);
+  }
 }
 
 export default WorkspaceService;
