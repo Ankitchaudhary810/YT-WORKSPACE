@@ -29,4 +29,6 @@ router
 
 router.route("/verify-auth").get(WorkspaceService.handleVerifyUser);
 
+router.route("/auth/google").get(WorkspaceService.handleAuth);
+
 export default router;

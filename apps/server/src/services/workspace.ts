@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, json } from "express";
 import { prisma } from "../prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -9,9 +9,9 @@ import {
   oauth2Client,
   youtube,
 } from "../utility";
-import { OAuth2Client } from "google-auth-library";
 import fs from "fs";
-import { google } from "googleapis";
+
+var isAuthorize = false;
 class WorkspaceService {
   public static async uploadVideo(req: Request, res: Response) {
     try {
@@ -145,9 +145,23 @@ class WorkspaceService {
   }
 
   public static async handleVerifyUser(req: Request, res: Response) {
-    console.log(3);
-    const url = generateAuthUrl();
-    return res.json(url);
+    if (!isAuthorize) {
+      const url = generateAuthUrl();
+      return res.status(200).json(url);
+    } else {
+    }
+  }
+
+  public static async handleAuth(req: Request, res: Response) {
+    const code = req.query.code;
+    if (code) {
+      oauth2Client.getToken(code, function (err, token) {
+        if (err) throw err;
+        console.log("user authenticated.");
+        oauth2Client.setCredentials(token!);
+        isAuthorize = true;
+      });
+    }
   }
 }
 
