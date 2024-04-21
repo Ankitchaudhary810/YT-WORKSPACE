@@ -31,4 +31,8 @@ router.route("/verify-auth").get(WorkspaceService.handleVerifyUser);
 
 router.route("/auth/google").get(WorkspaceService.handleAuth);
 
+router
+  .route("/upload-video-to-youtube")
+  .post(WorkspaceService.handleVideoUploadToYoutube);
+
 export default router;

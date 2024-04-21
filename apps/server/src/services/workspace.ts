@@ -3,13 +3,9 @@ import { prisma } from "../prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import axios from "axios";
-import {
-  generateAuthUrl,
-  getSignedUrlForAws,
-  oauth2Client,
-  youtube,
-} from "../utility";
+import { generateAuthUrl, getSignedUrlForAws, oauth2Client } from "../utility";
 import fs from "fs";
+const { google } = require("googleapis");
 
 var isAuthorize = false;
 class WorkspaceService {
@@ -153,16 +149,49 @@ class WorkspaceService {
   }
 
   public static async handleAuth(req: Request, res: Response) {
-    const code = req.query.code;
+    const code: any = req.query.code; //FIXME: code type
+    console.log("code: ", code);
     if (code) {
       oauth2Client.getToken(code, function (err, token) {
         if (err) throw err;
         console.log("user authenticated.");
         oauth2Client.setCredentials(token!);
         isAuthorize = true;
+        res.redirect("http://localhost:3000/workspace");
       });
     }
   }
-}
 
+  public static async handleVideoUploadToYoutube(req: Request, res: Response) {
+    const service = google.youtube("v3");
+    const filePath = "./upload/auth-service.mp4";
+
+    try {
+      const response = await service.videos.insert({
+        auth: oauth2Client,
+        part: "snippet,status",
+        requestBody: {
+          snippet: {
+            title: "this is title",
+            description: "this is description",
+            defaultLanguage: "en",
+            defaultAudioLanguage: "en",
+          },
+          status: {
+            privacyStatus: "private",
+          },
+        },
+        media: {
+          body: fs.createReadStream(filePath),
+        },
+      });
+
+      console.log("Video uploaded, response data:", response.data);
+      res.status(200).send("Video uploaded successfully");
+    } catch (err) {
+      console.error("The API returned an error:", err);
+      res.status(500).send("Failed to upload video due to an error.");
+    }
+  }
+}
 export default WorkspaceService;
