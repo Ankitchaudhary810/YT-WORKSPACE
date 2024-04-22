@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useVideoById } from "@/hooks/video";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { FaYoutube } from "react-icons/fa6";
 import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { useUpdateVideoById } from "@/hooks/video";
@@ -23,6 +23,7 @@ const page = ({ params: { id } }: Props) => {
   const { video, isLoading } = useVideoById(id);
   const { mutateAsync, isPending } = useUpdateVideoById(id);
   const [verified, setVerified] = useState(false);
+  const [isVideoLoading, setVideoLoading] = useState(false);
   const router = useRouter();
   const { authUrl } = getAuthUrl();
 
@@ -70,6 +71,25 @@ const page = ({ params: { id } }: Props) => {
     );
   }
 
+  // FIXME: THIS NEED TO BE FIX
+  const handleVerifyUser = () => {
+    window.open(authUrl as string, "_blank");
+    setVerified(true);
+  };
+
+  // FIXME: need proper upload.
+  const handleVideoUpload = async () => {
+    setVideoLoading(true);
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_BACKEND_URL + "/upload-video-to-youtube",
+      {
+        method: "POST",
+      }
+    );
+
+    setVideoLoading(false);
+  };
+
   return (
     <div className="container mx-auto mt-8 grid grid-cols-1 sm:grid-cols-2 gap-8 text-black">
       <div>
@@ -106,13 +126,18 @@ const page = ({ params: { id } }: Props) => {
                 type="button"
                 variant={"secondary"}
                 disabled={isPending || !verified}
+                onClick={handleVideoUpload}
               >
-                Upload
-                <FaYoutube color="red" className="ml-1" size={25} />
+                {isVideoLoading ? <Loader /> : "Upload"}
+                {!isVideoLoading && (
+                  <FaYoutube color="red" className="ml-1" size={25} />
+                )}
               </Button>
-              <Link href={authUrl} target="_blank">
-                <Button type="button">Verify</Button>
-              </Link>
+              {/* <Link href={authUrl} target="_blank"> */}
+              <Button type="button" onClick={handleVerifyUser}>
+                Verify
+              </Button>
+              {/* </Link> */}
             </div>
           </div>
         </Card>
