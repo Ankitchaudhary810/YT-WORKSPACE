@@ -27,7 +27,9 @@ router
   .route("/update-workspace-by-id/:id")
   .post(Auth.userAuth, WorkspaceService.handleUpdateWorkspaceById);
 
-router.route("/verify-auth").get(WorkspaceService.handleVerifyUser);
+router
+  .route("/verify-auth")
+  .get(Auth.userAuth, WorkspaceService.handleVerifyUser);
 
 router.route("/auth/google").get(WorkspaceService.handleAuth);
 

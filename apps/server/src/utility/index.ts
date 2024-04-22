@@ -52,8 +52,7 @@ export const oauth2Client = new OAuth2Client({
 export const generateAuthUrl = () => {
   return oauth2Client.generateAuthUrl({
     access_type: "offline",
-    scope:
-      "https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
+    scope: "https://www.googleapis.com/auth/youtube.upload",
   });
 };
 
@@ -65,11 +64,7 @@ export const getGoogleAuthURL = () => {
     access_type: "offline",
     response_type: "code",
     prompt: "consent",
-    scope: [
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/userinfo.email",
-      "https://www.googleapis.com/auth/youtube.upload",
-    ].join(" "),
+    scope: ["https://www.googleapis.com/auth/youtube.upload"].join(" "),
   };
   console.log("Redirect URI:", options.redirect_uri);
 

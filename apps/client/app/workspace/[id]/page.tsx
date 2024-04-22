@@ -5,11 +5,16 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useVideoById } from "@/hooks/video";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaYoutube } from "react-icons/fa6";
 import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { useUpdateVideoById } from "@/hooks/video";
 import React from "react";
+import { getAuthUrl } from "@/hooks/user";
+import { useMemo } from "react";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 interface Props {
   params: { id: string };
 }
@@ -17,6 +22,9 @@ interface Props {
 const page = ({ params: { id } }: Props) => {
   const { video, isLoading } = useVideoById(id);
   const { mutateAsync, isPending } = useUpdateVideoById(id);
+  const [verified, setVerified] = useState(false);
+  const router = useRouter();
+  const { authUrl } = getAuthUrl();
 
   const [videoData, setVideoData] = useState({
     title: video?.title,
@@ -93,10 +101,19 @@ const page = ({ params: { id } }: Props) => {
                 <MdOutlinePublishedWithChanges className="ml-1" size={28} />
               )}
             </Button>
-            <Button type="button" variant={"secondary"}>
-              Upload
-              <FaYoutube color="red" className="ml-1" size={25} />
-            </Button>
+            <div className="flex gap-3 ">
+              <Button
+                type="button"
+                variant={"secondary"}
+                disabled={isPending || !verified}
+              >
+                Upload
+                <FaYoutube color="red" className="ml-1" size={25} />
+              </Button>
+              <Link href={authUrl} target="_blank">
+                <Button type="button">Verify</Button>
+              </Link>
+            </div>
           </div>
         </Card>
       </div>

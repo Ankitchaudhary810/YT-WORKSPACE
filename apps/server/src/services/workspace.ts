@@ -7,7 +7,6 @@ import { generateAuthUrl, getSignedUrlForAws, oauth2Client } from "../utility";
 import fs from "fs";
 const { google } = require("googleapis");
 
-var isAuthorize = false;
 class WorkspaceService {
   public static async uploadVideo(req: Request, res: Response) {
     try {
@@ -141,11 +140,8 @@ class WorkspaceService {
   }
 
   public static async handleVerifyUser(req: Request, res: Response) {
-    if (!isAuthorize) {
-      const url = generateAuthUrl();
-      return res.status(200).json(url);
-    } else {
-    }
+    const url = generateAuthUrl();
+    return res.status(200).json(url);
   }
 
   public static async handleAuth(req: Request, res: Response) {
@@ -156,7 +152,6 @@ class WorkspaceService {
         if (err) throw err;
         console.log("user authenticated.");
         oauth2Client.setCredentials(token!);
-        isAuthorize = true;
         res.send("Verified.. Close the Window And Upload the Content.");
       });
     }
