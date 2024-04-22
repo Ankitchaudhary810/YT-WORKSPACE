@@ -158,17 +158,35 @@ class WorkspaceService {
   }
 
   public static async handleVideoUploadToYoutube(req: Request, res: Response) {
-    const service = google.youtube("v3");
-    const filePath = "./upload/auth-service.mp4";
-
     try {
+      const service = google.youtube("v3");
+      const id = req.params.id;
+      if (!id) return res.status(404);
+
+      const workspace = await prisma.workspace.findFirst({
+        where: {
+          id: id,
+        },
+      });
+
+      if (!workspace) return res.status(404);
+
+      const videoUrl = `${process.env.AWS_S3_VIDEO_URL}/${workspace.userId}/video/${workspace.videoName}`;
+      const video = await axios.get(videoUrl, {
+        responseType: "stream",
+      });
+
+      if (!video.data) {
+        return res.status(404).send("Video not found on AWS S3");
+      }
+
       const response = await service.videos.insert({
         auth: oauth2Client,
         part: "snippet,status",
         requestBody: {
           snippet: {
-            title: "this is title",
-            description: "this is description",
+            title: workspace?.title,
+            description: workspace?.description,
             defaultLanguage: "en",
             defaultAudioLanguage: "en",
           },
@@ -177,7 +195,7 @@ class WorkspaceService {
           },
         },
         media: {
-          body: fs.createReadStream(filePath),
+          body: video?.data,
         },
       });
 

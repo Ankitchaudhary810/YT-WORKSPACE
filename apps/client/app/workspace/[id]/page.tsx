@@ -81,7 +81,7 @@ const page = ({ params: { id } }: Props) => {
   const handleVideoUpload = async () => {
     setVideoLoading(true);
     const response = await fetch(
-      process.env.NEXT_PUBLIC_BACKEND_URL + "/upload-video-to-youtube",
+      process.env.NEXT_PUBLIC_BACKEND_URL + "/upload-video-to-youtube/" + id,
       {
         method: "POST",
       }

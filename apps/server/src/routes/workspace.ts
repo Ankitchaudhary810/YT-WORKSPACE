@@ -27,14 +27,12 @@ router
   .route("/update-workspace-by-id/:id")
   .post(Auth.userAuth, WorkspaceService.handleUpdateWorkspaceById);
 
-router
-  .route("/verify-auth")
-  .get(Auth.userAuth, WorkspaceService.handleVerifyUser);
+router.route("/verify-auth").get(WorkspaceService.handleVerifyUser);
 
 router.route("/auth/google").get(WorkspaceService.handleAuth);
 
 router
-  .route("/upload-video-to-youtube")
+  .route("/upload-video-to-youtube/:id")
   .post(WorkspaceService.handleVideoUploadToYoutube);
 
 export default router;
