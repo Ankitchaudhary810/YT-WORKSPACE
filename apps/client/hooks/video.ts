@@ -27,6 +27,7 @@ export const useVideoById = (id: string) => {
 };
 
 export const useUpdateVideoById = (id: string) => {
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationKey: ["update-workspace-by-id"],
     mutationFn: async ({
@@ -59,6 +60,7 @@ export const useUpdateVideoById = (id: string) => {
     },
     onSuccess: async () => {
       toast.success("Updated", { id: "1" });
+      queryClient.invalidateQueries({ queryKey: ["video-by-id", id] });
     },
     onError: async () => {
       toast.error("Fail to update", { id: "1" });

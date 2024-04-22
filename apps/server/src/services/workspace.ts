@@ -157,7 +157,7 @@ class WorkspaceService {
         console.log("user authenticated.");
         oauth2Client.setCredentials(token!);
         isAuthorize = true;
-        res.redirect("http://localhost:3000/workspace");
+        res.send("Verified.. Close the Window And Upload the Content.");
       });
     }
   }
