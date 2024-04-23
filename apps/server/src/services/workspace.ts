@@ -168,16 +168,15 @@ class WorkspaceService {
           id: id,
         },
       });
-
       if (!workspace) return res.status(404);
-
       const videoUrl = `${process.env.AWS_S3_VIDEO_URL}/${workspace.userId}/video/${workspace.videoName}`;
+      console.log(videoUrl);
       const video = await axios.get(videoUrl, {
         responseType: "stream",
       });
 
       if (!video.data) {
-        return res.status(404).send("Video not found on AWS S3");
+        return res.status(404).send("Video not found On AWS s3");
       }
 
       const response = await service.videos.insert({

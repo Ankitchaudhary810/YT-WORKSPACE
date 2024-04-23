@@ -15,6 +15,7 @@ import { useMemo } from "react";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import toast from "react-hot-toast";
 interface Props {
   params: { id: string };
 }
@@ -79,6 +80,7 @@ const page = ({ params: { id } }: Props) => {
 
   // FIXME: need proper upload.
   const handleVideoUpload = async () => {
+    toast.loading("uploading...", { id: "1" });
     setVideoLoading(true);
     const response = await fetch(
       process.env.NEXT_PUBLIC_BACKEND_URL + "/upload-video-to-youtube/" + id,
@@ -86,7 +88,10 @@ const page = ({ params: { id } }: Props) => {
         method: "POST",
       }
     );
-
+    if (response.status) {
+      toast.success("Uploaded.", { id: "1" });
+    }
+    toast.error("Error while uploading video.", { id: "1" });
     setVideoLoading(false);
   };
 
@@ -95,7 +100,7 @@ const page = ({ params: { id } }: Props) => {
       <div>
         <h1 className="text-2xl font-bold mb-4 text-white">{video?.title}</h1>
         <video className="w-full" controls muted>
-          <source src={video.aws_s3_url} type="video/mp4" />
+          <source src={video?.aws_s3_url} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
