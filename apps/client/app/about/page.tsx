@@ -4,16 +4,21 @@ import Image from "next/image";
 
 const AboutPage = () => {
   return (
-    <div className="flex  gap-2 justify-evenly mt-20">
-      <div>
+    <div className="flex flex-col md:flex-row items-center justify-center mt-20   gap-4 p-4 px-4">
+      <div className="flex flex-1 justify-center items-center  p-4">
         <Image
           src={about}
           alt="about-page"
           width={500}
-          className="rounded-sm"
+          height={300} // You might need to specify the height as well
+          className="rounded-sm object-cover"
         />
       </div>
-      <div>Paragraph.</div>
+      <div className="flex flex-1 p-4 text-center max-w-lg mx-auto">
+        We are a team of designers, engineers and creators all coming together
+        to form a creative community with a common vision of growth and
+        innovation.
+      </div>
     </div>
   );
 };
