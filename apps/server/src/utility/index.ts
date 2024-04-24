@@ -66,7 +66,6 @@ export const getGoogleAuthURL = () => {
     prompt: "consent",
     scope: ["https://www.googleapis.com/auth/youtube.upload"].join(" "),
   };
-  console.log("Redirect URI:", options.redirect_uri);
 
   return `${rootUrl}?${querystring.stringify(options)}`;
 };

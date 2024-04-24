@@ -10,14 +10,14 @@ const AboutPage = () => {
           src={about}
           alt="about-page"
           width={500}
-          height={300} // You might need to specify the height as well
+          height={300}
           className="rounded-sm object-cover"
         />
       </div>
       <div className="flex flex-1 p-4 text-center max-w-lg mx-auto">
         We are a team of designers, engineers and creators all coming together
         to form a creative community with a common vision of growth and
-        innovation.
+        innovation 🤑.
       </div>
     </div>
   );

@@ -88,10 +88,9 @@ const page = ({ params: { id } }: Props) => {
         method: "POST",
       }
     );
-    if (response.status) {
+    if (response.ok) {
       toast.success("Uploaded.", { id: "1" });
-    }
-    toast.error("Error while uploading video.", { id: "1" });
+    } else toast.error("Error while uploading video.", { id: "1" });
     setVideoLoading(false);
   };
 

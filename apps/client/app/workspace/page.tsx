@@ -12,13 +12,7 @@ import { Video } from "@/types/type";
 const page = () => {
   const { user } = useCurrentUser();
   const { workspaces, isLoading } = useGetAllWorkspaces();
-  // const router = useRouter();
 
-  // useLayoutEffect(() => {
-  //   if (!user) {
-  //     router.push("/signin");
-  //   }
-  // }, [user]);
   if (isLoading) {
     return (
       <h1 className="flex items-center justify-center">

@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response, json } from "express";
 import { prisma } from "../prisma";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import axios from "axios";
 import { generateAuthUrl, getSignedUrlForAws, oauth2Client } from "../utility";
 import fs from "fs";
@@ -121,7 +119,6 @@ class WorkspaceService {
     try {
       const id = req.params.id;
       const { title, description } = req.body;
-      console.log({ title, description });
       if (!id || typeof id !== "string") return;
       const workspace = await prisma.workspace.update({
         where: {
@@ -170,9 +167,9 @@ class WorkspaceService {
       });
       if (!workspace) return res.status(404);
       const videoUrl = `${process.env.AWS_S3_VIDEO_URL}/${workspace.userId}/video/${workspace.videoName}`;
-      console.log(videoUrl);
       const video = await axios.get(videoUrl, {
         responseType: "stream",
+        timeout: 10000,
       });
 
       if (!video.data) {
@@ -202,7 +199,7 @@ class WorkspaceService {
       res.status(200).send("Video uploaded successfully");
     } catch (err) {
       console.error("The API returned an error:", err);
-      res.status(500).send("Failed to upload video due to an error.");
+      res.status(500).send(`Failed to upload video due to an error. ${err}`);
     }
   }
 }
