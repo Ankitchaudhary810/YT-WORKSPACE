@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import HomeImage from "../public/home.svg";
 import toast from "react-hot-toast";
+import Footer from "@/components/footer";
 
 export default function Home() {
   const router = useRouter();
@@ -50,6 +51,7 @@ export default function Home() {
           </Button>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
