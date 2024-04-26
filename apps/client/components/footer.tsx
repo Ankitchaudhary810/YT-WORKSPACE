@@ -5,7 +5,7 @@ const footer = async () => {
     <>
       <footer className="bg-black dark:bg-gray-900">
         <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center gap-4 rounded-lg bg-indigo-600 p-6 shadow-lg sm:flex-row sm:justify-between">
+          <div className="flex flex-col items-center gap-4 rounded-lg bg-slate-900 p-6 shadow-lg sm:flex-row sm:justify-between">
             <strong className="text-xl text-white sm:text-xl">
               {" "}
               Make Your Next Influencer Move!{" "}
@@ -118,59 +118,6 @@ const footer = async () => {
                     href="#"
                   >
                     Google Ads
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div className="text-center sm:text-left">
-              <p className="text-lg font-medium text-gray-400 dark:text-white">
-                Resources
-              </p>
-
-              <ul className="mt-8 space-y-4 text-sm">
-                <li>
-                  <a
-                    className="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                    href="#"
-                  >
-                    Online Guides
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    className="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                    href="#"
-                  >
-                    Conference Notes
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    className="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                    href="#"
-                  >
-                    Forum
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    className="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                    href="#"
-                  >
-                    Downloads
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    className="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                    href="#"
-                  >
-                    Upcoming Events
                   </a>
                 </li>
               </ul>
@@ -319,7 +266,7 @@ const footer = async () => {
 
             <div className="mt-16 sm:flex sm:items-center sm:justify-between">
               <p className="mt-4 text-center text-sm text-gray-500 sm:mt-0 sm:text-right dark:text-gray-400">
-                Copyright &copy; 2022. All rights reserved.
+                Copyright &copy; 2024. YT-WORKSPACE All rights reserved.
               </p>
             </div>
           </div>
