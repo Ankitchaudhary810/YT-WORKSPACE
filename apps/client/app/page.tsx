@@ -35,7 +35,10 @@ export default function Home() {
 
         <div className="w-full lg:w-1/2 sm:mt-28 mt-1">
           <h1 className="text-3xl lg:text-4xl font-bold mb-4 lg:mb-6">
-            Be Productive to Your Youtube.
+            Be Productive to Your{" "}
+            <span className="bg-red-600 rounded-xl px-2 py-1 text-xl justify-start items-center">
+              Youtube
+            </span>
           </h1>
           <p className="text-base lg:text-lg mb-4 lg:mb-6 text-slate-300">
             Our platform seamlessly connects YouTube channel owners with trusted
