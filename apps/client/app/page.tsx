@@ -11,14 +11,7 @@ export default function Home() {
 
   const handleSubmit = () => {
     if (!localStorage.getItem("user_jwt")) {
-      toast.error("Not Authenticated.", {
-        style: {
-          borderRadius: "7px",
-          background: "#000000",
-          color: "#fff",
-          border: "1px solid white",
-        },
-      });
+      toast.error("Not Authenticated.");
       router.push("/signup");
     } else {
       router.push("/workspace");
@@ -37,7 +30,7 @@ export default function Home() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4 lg:mb-6">
             Be Productive to Your{" "}
             <span className="bg-red-600 rounded-xl px-2 py-1 text-xl justify-start items-center">
-              Youtube
+              YouTube
             </span>
           </h1>
           <p className="text-base lg:text-lg mb-4 lg:mb-6 text-slate-300">
