@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
 export const useLogin = () => {
-  const [data, setData] = useState<string>("");
+  const [data, setData] = useState("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<Boolean>(false);
 
@@ -25,7 +25,9 @@ export const useLogin = () => {
       if (response.ok) {
         setData(jsonData);
       } else {
-        throw new Error(jsonData.message || "Unable to login");
+        console.log("msg: ", jsonData.msg);
+        setError(jsonData.msg);
+        throw new Error(jsonData.msg || "Unable to login");
       }
     } catch (err) {
       setError(err.message);
