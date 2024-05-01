@@ -61,7 +61,7 @@ class UserService {
 
   public static async CreateEditor(req: Request, res: Response) {
     try {
-      const { email, password } = req.body;
+      const { name, email, password } = req.body;
       const userRole: string = req.headers["userRole"] as string;
       const userId: string = req.headers["userId"] as string;
       const userEmail: string = req.headers["userEmail"] as string;
@@ -83,6 +83,7 @@ class UserService {
 
       editor = await prisma.video_Editor.create({
         data: {
+          name,
           email,
           password: hashedPass,
           ParentUser: {
@@ -175,6 +176,7 @@ class UserService {
         select: {
           id: true,
           email: true,
+          name: true,
           updatedAt: true,
           createdAt: true,
           ParentUser: {
