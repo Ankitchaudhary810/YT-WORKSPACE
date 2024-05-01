@@ -1,6 +1,16 @@
-import React from "react";
+"use client";
+import { useCurrentEditor } from "@/hooks/useGetcurrentEditor";
+import React, { useEffect } from "react";
 
 const Home = () => {
+  const { error, loading, editor, currentEditor } = useCurrentEditor();
+
+  useEffect(() => {
+    currentEditor();
+  }, []);
+
+  console.log(editor);
+
   return (
     <main className="min-h-screen bg-black text-white mt-4">
       <div className="grid grid-cols-12 h-full w-full">
