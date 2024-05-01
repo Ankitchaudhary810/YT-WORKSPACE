@@ -2,8 +2,20 @@ import React from "react";
 
 const Home = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-black text-white ">
-      Home
+    <main className="min-h-screen bg-black text-white mt-4">
+      <div className="grid grid-cols-12 h-full w-full">
+        {/* lef side */}
+        <div className="grid col-span-3  h-full w-full p-3 ">
+          <div className="bg-zinc-800 w-full h-full p-2 rounded-xl">
+            alsdkflas
+          </div>
+        </div>
+
+        {/* right side */}
+        <div className="grid col-span-9 bg-teal-600 h-full w-full">
+          Video Section.
+        </div>
+      </div>
     </main>
   );
 };

@@ -157,6 +157,44 @@ class UserService {
       return res.sendStatus(500);
     }
   }
+
+  public static async getCurrentEditor(req: Request, res: Response) {
+    try {
+      const editorId = req.headers["editorId"];
+      console.log(editorId);
+
+      if (typeof editorId !== "string" || !editorId) {
+        console.log("Invalid editorId:", editorId);
+        return res.status(400).json({ error: "Invalid editor ID provided." });
+      }
+
+      const editor = await prisma.video_Editor.findFirst({
+        where: {
+          id: editorId,
+        },
+        select: {
+          ParentUser: {
+            select: {
+              id: true,
+              email: true,
+              name: true,
+              workspace: true,
+              editors: true,
+            },
+          },
+        },
+      });
+      console.log(editor);
+      if (!editor) {
+        res.status(404);
+      }
+
+      return res.json();
+    } catch (error) {
+      console.log("Error while getCurrentEditor", error);
+      return res.sendStatus(500);
+    }
+  }
 }
 
 export default UserService;

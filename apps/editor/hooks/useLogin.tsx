@@ -1,9 +1,13 @@
 import { useCallback, useState } from "react";
 
+interface TokenProps {
+  token: string;
+}
+
 export const useLogin = () => {
-  const [data, setData] = useState("");
-  const [error, setError] = useState<string>("");
-  const [loading, setLoading] = useState<Boolean>(false);
+  let [data, setData] = useState<TokenProps | undefined>();
+  let [error, setError] = useState<string>("");
+  let [loading, setLoading] = useState<Boolean>(false);
 
   const login = useCallback(async (email: string, password: string) => {
     setLoading(true);
@@ -36,5 +40,5 @@ export const useLogin = () => {
     }
   }, []);
 
-  return { data, error, loading, login };
+  return { data, error, loading, login, setError };
 };

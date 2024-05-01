@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  const { data, login, error, loading } = useLogin();
+  const { data, login, error, loading, setError } = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -27,8 +27,10 @@ export default function Home() {
     e.preventDefault();
     console.log({ email, password });
     login(email, password);
-    console.log("data: ", data.token);
-    if (data.token) {
+    console.log("data: ", data?.token);
+    if (data?.token) {
+      setError("");
+      if (data.token) localStorage.setItem("editor-token", data.token);
       router.push("/home");
     }
     setEmail("");
@@ -58,7 +60,7 @@ export default function Home() {
               <Input
                 id="email"
                 placeholder="kit@gmail.com"
-                className={`col-span-3 ${error ? "outline outline-red-900 outline-3" : ""}`}
+                className={`col-span-3 ${error ? "outline outline-red-900 outline-3" : ""} border-none`}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -72,7 +74,7 @@ export default function Home() {
                 id="name"
                 type="password"
                 placeholder="***** *****"
-                className={`col-span-3 ${error ? "outline outline-red-900 outline-3" : ""}`}
+                className={`col-span-3 ${error ? "outline outline-red-900 outline-3" : ""} border-none`}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
