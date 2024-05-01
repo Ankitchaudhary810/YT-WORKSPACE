@@ -58,6 +58,8 @@ class Auth {
             return res.sendStatus(403);
           }
 
+          console.log(decodedToken.id);
+
           req.headers["editorId"] = decodedToken.id;
           req.headers["userRole"] = decodedToken.role;
           req.headers["userEmail"] = decodedToken.email;

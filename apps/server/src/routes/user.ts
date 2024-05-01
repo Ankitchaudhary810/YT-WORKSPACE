@@ -15,6 +15,6 @@ router.route("/create-editor").post(Auth.userAuth, UserService.CreateEditor);
 router.route("/editor-login").post(UserService.LoginEditor);
 router
   .route("/current/editor")
-  .get(Auth.userAuth, UserService.getCurrentEditor);
+  .get(Auth.editorAuth, UserService.getCurrentEditor);
 
 export default router;

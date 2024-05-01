@@ -161,7 +161,6 @@ class UserService {
   public static async getCurrentEditor(req: Request, res: Response) {
     try {
       const editorId = req.headers["editorId"];
-      console.log(editorId);
 
       if (typeof editorId !== "string" || !editorId) {
         console.log("Invalid editorId:", editorId);
@@ -172,24 +171,27 @@ class UserService {
         where: {
           id: editorId,
         },
+
         select: {
+          id: true,
+          email: true,
+          updatedAt: true,
+          createdAt: true,
           ParentUser: {
             select: {
               id: true,
               email: true,
               name: true,
               workspace: true,
-              editors: true,
             },
           },
         },
       });
-      console.log(editor);
       if (!editor) {
         res.status(404);
       }
 
-      return res.json();
+      return res.json(editor);
     } catch (error) {
       console.log("Error while getCurrentEditor", error);
       return res.sendStatus(500);
