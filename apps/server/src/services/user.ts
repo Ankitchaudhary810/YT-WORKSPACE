@@ -83,7 +83,7 @@ class UserService {
 
       editor = await prisma.video_Editor.create({
         data: {
-          name,
+          // name,
           email,
           password: hashedPass,
           ParentUser: {
@@ -142,7 +142,7 @@ class UserService {
         select: {
           id: true,
           email: true,
-          name: true,
+          // name: true,
           editors: true,
           workspace: true,
         },
@@ -176,7 +176,7 @@ class UserService {
         select: {
           id: true,
           email: true,
-          name: true,
+          // name: true,
           updatedAt: true,
           createdAt: true,
           ParentUser: {
